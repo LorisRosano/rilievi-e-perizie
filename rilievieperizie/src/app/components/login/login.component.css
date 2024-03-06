@@ -1,0 +1,83 @@
+@font-face {
+  font-family: exo;
+  src: url("font/Exo-Regular.otf");
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "exo";
+    background-color: #f4f4f4;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    height: 100vh;
+    overflow: hidden;
+}
+#mainDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: #222222;
+}
+#divMenu{
+    display: grid;
+    justify-content: center;
+    text-align: center;
+    width: 20vw;
+    height: 100vh;
+    background-color: rgb(180, 173, 173);
+    margin-left: 161vh;
+    opacity: 75%;
+    border-radius: 3.5vh 0vh 0vh 3.5vh;
+    
+}
+
+#mainDiv, #divMenu{
+    grid-area: 1/1/2/2;
+}
+
+h1{
+  width: 15vw;
+  height: 5vh;
+  font-size: 27px;
+  margin-top: 8vh;
+}
+
+#divScelta{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+   font-size: 30px;
+   width: auto;
+   margin-bottom: 30vh;
+   gap: 60px;
+}
+p{
+  width: 110px;
+  display: grid;
+  position: relative;
+}
+
+p::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color:  black;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+p:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+
