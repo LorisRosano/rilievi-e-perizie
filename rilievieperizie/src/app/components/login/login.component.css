@@ -30,21 +30,65 @@ body{
     width: 20vw;
     height: 100vh;
     background-color: rgb(180, 173, 173);
-    margin-left: 161vh;
+    margin-left: 167vh;
     opacity: 75%;
     border-radius: 3.5vh 0vh 0vh 3.5vh;
+    /* visibility: hidden; */
     
+}
+
+#divLogin{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 20vw;
+    height: 40vh;
+    background-color: #f4f4f4;
+    border-radius: 3.5vh;
+    box-shadow: 0px 0px 10px 0px black;
+    background-color: rgb(180, 173, 173);
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 5vh;
+
 }
 
 #mainDiv, #divMenu{
     grid-area: 1/1/2/2;
 }
 
-h1{
+#divMenu h1{
   width: 15vw;
   height: 5vh;
   font-size: 27px;
   margin-top: 8vh;
+}
+
+input{
+    width: 15vw;
+    height: 5vh;
+    border-radius: 3.5vh;
+    border: none;
+    padding-left: 10px;
+    font-size: 20px;
+
+}
+
+button{
+    width: 15vw;
+    height: 5vh;
+    border-radius: 3.5vh;
+    border: none;
+    background-color: #222222;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+
 }
 
 #divScelta{
@@ -78,6 +122,20 @@ p::after {
 p:hover::after {
   transform: scaleX(1);
   transform-origin: bottom left;
+}
+
+.rosso{
+  animation: animLoginErrato 1s forwards;
+}
+
+
+@keyframes animLoginErrato{
+  0%{
+    background-color: rgb(180, 173, 173);
+  }
+  100%{
+    background-color: red;
+  }
 }
 
 

@@ -3,11 +3,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="login.component.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script src="login.component.js"></script>
 </head>
 <body>
     <div id="mainDiv">
-        ddd
+        <div id="divLogin" [class.rosso]="rosso">
+            <h1>Accedi</h1>
+            <form>
+                <input type="text" id="username" placeholder="Username" name="username" required [(ngModel)]="username">
+                <br>
+                <input type="password" id="password" placeholder="Password" name="password" required [(ngModel)]="password">
+                <br>
+                <button type="submit" (click)="btnLogin()">Accedi</button>
+            </form>
+        </div>
     </div>
     <div id="divMenu">
         <h1>Scegli come accedere</h1>
