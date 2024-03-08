@@ -1,0 +1,32 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="admin.component.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXvat0M8Htf-PP-ESJ5QZoLIKhKxqXWTE"></script>
+
+</head>
+<body>
+    <div id="mainDiv">
+        <div id="divMappa">
+            <google-map height="500px"
+                width="900px"
+                [center]="center"
+                [zoom]="zoom"
+                (mapClick)="moveMap($event)"
+                (mapMousemove)="move($event)">
+            </google-map>
+        </div>
+        <div id="divMenu">
+            <h1>Dashboard Admin</h1>
+            <div id="divScelta">
+                <p>Aggiungi Utente</p>
+                <p>Cerca Utente</p>
+            </div>
+        </div>
+    </div>
+    
+    
+</body>
+</html>

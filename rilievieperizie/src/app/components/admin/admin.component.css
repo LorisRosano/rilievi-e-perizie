@@ -1,0 +1,99 @@
+@font-face {
+    font-family: exo;
+    src: url("font/Exo-Regular.otf");
+  }
+  
+  body{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "exo";
+      background-color: #f4f4f4;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      height: 100vh;
+      overflow: hidden;
+  }
+  #mainDiv{
+      display: flex;
+      align-items: center;
+      width: 100vw;
+      height: 100vh;
+      background-color: #222222;
+  }
+  #divMappa{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 70vw;
+        height: 90vh;
+        border-radius: 3.5vh;
+        position: relative;
+        margin-inline: auto;
+  }
+  #divMenu{
+      display: flex;
+      flex-direction: column;
+      margin-left: auto;
+      text-align: center;
+      width: 20vw;
+      height: 100vh;
+      background-color: #8C8888;
+      right: 0;
+      border-radius: 3.5vh 0vh 0vh 3.5vh;
+      /* visibility: hidden; */
+      padding-block: 10vh;
+      
+  }
+  
+  
+  #mainDiv, #divMenu{
+      grid-area: 1/1/2/2;
+  }
+  
+  #divMenu h1{
+    width: 100%;
+    height: 5vh;
+    font-size: 27px;
+    text-align: center;
+  }
+  
+  
+  #divScelta{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+     font-size: 30px;
+     width: auto;
+     gap: 60px;
+     margin-block: auto;
+  }
+  p{
+    width: 110px;
+    display: grid;
+    position: relative;
+  }
+  
+  p::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color:  black;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+  }
+  
+  p:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+  
+  
+  
+  
+  

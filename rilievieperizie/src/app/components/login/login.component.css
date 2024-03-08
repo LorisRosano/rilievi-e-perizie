@@ -24,22 +24,25 @@ body{
     background-color: #222222;
 }
 #divMenu{
-    display: grid;
-    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    
     text-align: center;
     width: 20vw;
     height: 100vh;
     background-color: rgb(180, 173, 173);
-    margin-left: 167vh;
+    position: absolute;
+    right: 0;
     opacity: 75%;
     border-radius: 3.5vh 0vh 0vh 3.5vh;
     /* visibility: hidden; */
+    padding-block: 10vh;
     
 }
 
 #divLogin{
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     flex-direction: column;
     width: 20vw;
@@ -48,13 +51,13 @@ body{
     border-radius: 3.5vh;
     box-shadow: 0px 0px 10px 0px black;
     background-color: rgb(180, 173, 173);
+    transition: background-color 0.5s ease;
 }
 
 form{
     display: flex;
     flex-direction: column;
     gap: 20px;
-    margin-top: 5vh;
 
 }
 
@@ -63,10 +66,10 @@ form{
 }
 
 #divMenu h1{
-  width: 15vw;
+  width: 100%;
   height: 5vh;
   font-size: 27px;
-  margin-top: 8vh;
+  text-align: center;
 }
 
 input{
@@ -97,8 +100,8 @@ button{
   flex-direction: column;
    font-size: 30px;
    width: auto;
-   margin-bottom: 30vh;
    gap: 60px;
+   margin-block: auto;
 }
 p{
   width: 110px;
@@ -124,18 +127,9 @@ p:hover::after {
   transform-origin: bottom left;
 }
 
-.rosso{
-  animation: animLoginErrato 1s forwards;
+#divLogin.rosso{
+  background-color: red;
 }
 
-
-@keyframes animLoginErrato{
-  0%{
-    background-color: rgb(180, 173, 173);
-  }
-  100%{
-    background-color: red;
-  }
-}
 
 
