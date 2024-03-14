@@ -13,17 +13,13 @@ import { GoogleMapsModule } from '@angular/google-maps';
 export class AdminComponent {
   title = 'Admin'
 
-  display: any;
   center: google.maps.LatLngLiteral = {
-    lat: 22.2736308,
-    lng: 70.7512555
-  };
-  zoom = 6;
-
-  moveMap(event: google.maps.MapMouseEvent) {
-    if (event.latLng != null) this.center = (event.latLng.toJSON());
- }
-  move(event: google.maps.MapMouseEvent) {
-    if (event.latLng != null) this.display = event.latLng.toJSON();
-  }
+    lat: 24,
+    lng: 12
+};
+zoom = 4;
+vertices: google.maps.LatLngLiteral[] = [{
+    lat: 45.59135,
+    lng: 10.243048
+}];
 }

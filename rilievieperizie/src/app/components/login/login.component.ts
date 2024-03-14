@@ -24,7 +24,9 @@ export class LoginComponent {
   async btnLogin(){
     let rq = await this.server.inviaRichiesta("get", "/login" , {username: this.username, password: this.password});
     this.rosso = !rq;
-    this.router.navigate(['/admin']);
+    if(rq){
+      this.router.navigate(['/admin']);
+    }
   }
 
   
