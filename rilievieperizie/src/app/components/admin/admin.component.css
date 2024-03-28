@@ -1,26 +1,22 @@
 @font-face {
     font-family: exo;
-    src: url("/src/font/Exo-Regular.otf");
+    src: url("font/Exo-Regular.otf");
   }
-  
-  body{
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "exo";
-      background-color: #f4f4f4;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      height: 100vh;
-      overflow: hidden;
+
+  :host{
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    font-family: exo;
   }
+
   #mainDiv{
       display: flex;
       align-items: center;
       width: 100vw;
       height: 100vh;
       background-color: #222222;
+      z-index: 0;
   }
   #divMappa{
         display: flex;
@@ -31,6 +27,7 @@
         border-radius: 3.5vh;
         position: relative;
         margin-inline: auto;
+        z-index: 1;
   }
   #divMenu{
       display: flex;
@@ -44,9 +41,105 @@
       border-radius: 3.5vh 0vh 0vh 3.5vh;
       /* visibility: hidden; */
       padding-block: 10vh;
-      
+      z-index: 3;
   }
-  
+
+  #divAggiungiUtente{
+    display: flex;
+      flex-direction: column;
+      margin-left: auto;
+      text-align: center;
+      position: absolute;
+      z-index: -1;
+      width: 20vw;
+      height: 90vh;
+      margin-bottom: 5vh;
+      background-color: #353131;
+      bottom: 0;
+      right: 0;
+      border-radius: 3.5vh 0vh 0vh 3.5vh;
+      
+      
+      
+      z-index: 2;
+      --padding: 1rem;
+      padding: var(--padding);
+      contain: paint;
+  }
+
+  #divIntermedio{
+    padding-block: 20vh;
+    position: relative;
+    width: 40vw;
+    height: inherit;
+  }
+  form{
+    padding-block: 10vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-block: auto;
+    gap: 2rem;
+  }
+  input{
+    width: 20vw;
+    height: 3rem;
+    border: 1px solid #000;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border-radius: 3.5vh;
+  }
+
+  button{
+    border-radius: 3.5vh;
+    width: 20vw;
+    height: 3rem;
+    border: 1px solid #000;
+    padding: 0.5rem;
+    font-size: 1rem;
+    background-color: #8C8888;
+    color: white;
+    cursor: pointer;
+  }
+
+  #closeDivAggiungiUtente{
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 5vh;
+    cursor: pointer;
+    color: white;
+  } 
+  .apriDivAggiungiUtente{
+    animation: animRight 1s forwards;
+  }
+  .chiudiDivAggiungiUtente{
+    animation: animRightClose 1s forwards; 
+  }
+
+   @keyframes animRight{
+    0%{
+      margin-right: 0vh;
+      width: 20vw;
+    }
+    100%{
+      margin-right: 40vh;
+      width: 40vw;
+    }
+  } 
+
+  @keyframes animRightClose{
+    0%{
+      margin-right: 40vh;
+      width: 40vw;
+    }
+    100%{
+      margin-right: 0vh;
+      width: 20vw;
+      
+    }
+  } 
   
   #mainDiv, #divMenu{
       grid-area: 1/1/2/2;

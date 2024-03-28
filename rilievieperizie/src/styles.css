@@ -8,3 +8,9 @@
   font-family: exo;
   src: url("../src/font/Exo-Regular.otf");
 }
+input{
+  font-family: inherit;
+}
+button{
+  font-family: inherit;
+}

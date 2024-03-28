@@ -24,7 +24,6 @@ window.onload = async function() {
     await caricaGoogleMaps()
 
 	let mapContainer = $("#divMappa");       
-    alert("porcodio");
 	
 	let gpsOptions = {
 		enableHighAccuracy: false,
@@ -65,5 +64,5 @@ window.onload = async function() {
 		results.html(`Errore: ${err.code} - ${err.message}`)
 	}	
 	
-
+	
 }

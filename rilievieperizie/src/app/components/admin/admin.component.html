@@ -3,13 +3,37 @@
     <div id="divMappa">
         <google-map height="400px" width="72vw" height="90vh" [center]="center" [zoom]="zoom">
             <map-polyline [path]="vertices"></map-polyline>
+
+            @for (marker of markers; track $index) {
+                <map-marker [position]="marker.position" [title]="marker.title" (click)="infoMarker()"></map-marker>
+            }
+            
         </google-map>
     </div>
     <div id="divMenu">
         <h1>Dashboard Admin</h1>
         <div id="divScelta">
-            <p>Aggiungi Utente</p>
+            <p (click)="apriAggiuntaUtente()">Aggiungi Utente</p>
             <p>Cerca Utente</p>
         </div>
     </div>
-</div>
+
+    
+        <div id="divAggiungiUtente" [class.apriDivAggiungiUtente]="animationAggiungiUtente" [class.chiudiDivAggiungiUtente]="animationCloseAggiungiUtente">
+
+            <div id="divIntermedio">
+                <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="chiudiAggiuntaUtente()">
+                    close
+                </span>
+                <form>
+                    <input type="text" placeholder="Nome Utente" name="username" [(ngModel)]="username">
+                    <input type="text" placeholder="Email" name="email" [(ngModel)]="email">
+                    <button (click)="aggiungiUtente()">Aggiungi</button>
+                </form>
+            </div>
+            
+        </div>
+    
+    
+      
+</div> 

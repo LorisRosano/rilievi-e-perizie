@@ -15,6 +15,28 @@
                 <button type="submit" (click)="btnLogin()">Accedi</button>
             </form>
         </div>
+        @if(divConfermaPassword == true){
+            <div id="divPrimoAccesso" [class.rosso]="rosso" >
+                <h1>Crea una password</h1>
+                <form>
+                    <input type="password" id="nuovaPassword" placeholder="Password" name="password" required [(ngModel)]="nuovaPassword" (change)="controlloPassword($event)">
+                    <input type="password" id="confermaPassword" placeholder="Conferma password" name="confermaPassword" required [(ngModel)]="confermaPassword">
+                    <button type="submit" (click)="btnAccedi()">Accedi</button>
+                </form>
+            </div>
+            @if(passwordOnChange == true){
+                <div id="divSicurezzaPassword">
+                    <p>La password deve contenere almeno 8 caratteri</p>
+                    <p>La password deve contenere almeno un carattere maiuscolo</p>
+                    <p>La password deve contenere almeno un carattere minuscolo</p>
+                    <p>La password deve contenere almeno un numero</p>
+                    <p>La password deve contenere almeno un carattere speciale</p>
+                </div>
+            }
+            
+        }
+        
+
     </div>
     <div id="divMenu">
         <h1>Scegli come accedere</h1>

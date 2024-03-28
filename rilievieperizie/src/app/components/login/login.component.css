@@ -16,17 +16,18 @@ body{
     overflow: hidden;
 }
 #mainDiv{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-items: center;
+    
     width: 100vw;
     height: 100vh;
     background-color: #222222;
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    
 }
 #divMenu{
     display: flex;
     flex-direction: column;
-    
     text-align: center;
     width: 20vw;
     height: 100vh;
@@ -52,6 +53,41 @@ body{
     box-shadow: 0px 0px 10px 0px black;
     background-color: rgb(180, 173, 173);
     transition: background-color 0.5s ease;
+}
+
+#divPrimoAccesso{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+    width: 20vw;
+    height: 40vh;
+    background-color: #ff0000;
+    border-radius: 3.5vh;
+    box-shadow: 0px 0px 10px 0px black;
+    background-color: rgb(180, 173, 173);
+    transition: background-color 0.5s ease;
+}
+
+#divSicurezzaPassword{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+  width: 15vw;
+  height: 20vh;
+  background-color: #f4f4f4;
+  border-radius: 3.5vh;
+  box-shadow: 0px 0px 10px 0px black;
+  background-color: rgb(180, 173, 173);
+  transition: background-color 0.5s ease;
+  grid-area: 1/1/2/2;
+  transform: translateY(calc(50% + 30vh)) translateX(calc(50% + 12.5vw));
+}
+
+#divLogin, #divPrimoAccesso{
+  grid-area: 1/1/2/2;
+  transform: translateY(calc(50% + 10vh));
 }
 
 form{

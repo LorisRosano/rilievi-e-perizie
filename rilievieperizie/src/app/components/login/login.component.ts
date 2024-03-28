@@ -19,14 +19,45 @@ export class LoginComponent {
   username:string = "";
   password:string = "";
 
+  nuovaPassword:string = "";
+  confermaPassword:string = "";
+
+  divConfermaPassword:boolean = false;
   rosso:boolean = false;
+  passwordOnChange:boolean = false;
 
   async btnLogin(){
-    let rq = await this.server.inviaRichiesta("get", "/login" , {username: this.username, password: this.password});
-    this.rosso = !rq;
-    if(rq){
-      this.router.navigate(['/admin']);
+    if(this.username == "admin"){
+      let rq = await this.server.inviaRichiesta("get", "/login" , {username: this.username, password: this.password});
+      this.rosso = !rq;
+      if(rq){
+        this.router.navigate(['/admin']);
+      }
     }
+    else{
+      if(this.password == "password"){
+        this.divConfermaPassword = true;
+      }
+      else{
+        let rq = await this.server.inviaRichiesta("get", "/login" , {username: this.username, password: this.password});
+        this.rosso = !rq;
+        if(rq){
+          this.router.navigate(['/utente']);
+        }
+      }
+    }
+    
+  }
+
+  btnAccedi(){
+    if(this.nuovaPassword == this.confermaPassword){
+      let rq = this.server.inviaRichiesta("post", "/primoLogin", {username: this.username, password: this.nuovaPassword});
+      this.divConfermaPassword = false;
+    }
+  }
+
+  controlloPassword(ausPassword:any){
+    this.passwordOnChange = true;
   }
 
   
