@@ -13,6 +13,7 @@
     <div id="divMenu">
         <h1>Dashboard Admin</h1>
         <div id="divScelta">
+            <p (click)="apriListaUtenti()">Lista utenti</p>
             <p (click)="apriAggiuntaUtente()">Aggiungi Utente</p>
             <p>Cerca Utente</p>
         </div>
@@ -29,7 +30,36 @@
                     <input type="text" placeholder="Nome Utente" name="username" [(ngModel)]="username">
                     <input type="text" placeholder="Email" name="email" [(ngModel)]="email">
                     <button (click)="aggiungiUtente()">Aggiungi</button>
+                    <p id="lblAggiungiUtente" [class.coloreAggiuntaUtente]="coloreUtenteAggiunto" [class.coloreAggiuntaUtente]="coloreUtenteNONAggiunto">{{lblAggiungiUtente}}</p>
                 </form>
+            </div>
+            
+        </div>
+
+        <div id="divListaUtenti" [class.apriDivAggiungiUtente]="animationListaUtenti" [class.chiudiDivAggiungiUtente]="animationCloseListaUtenti">
+
+            <div id="divIntermedio">
+                <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="chiudiListaUtenti()">
+                    close
+                </span>
+                <table>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th></th>
+                    </tr>
+                    @for(utente of listaUtenti; track $index)
+                    { 
+                        @if( utente.username != "" && utente.username != "admin")
+                        {
+                            <tr>
+                                <td>{{utente.username}}</td>
+                                <td>{{utente.email}}</td>
+                                <td><span class="material-symbols-outlined" id="deleteUser" (click)="eliminaUtente(utente._id)">delete</span></td>
+                            </tr>
+                        }
+                    }
+                </table>
             </div>
             
         </div>

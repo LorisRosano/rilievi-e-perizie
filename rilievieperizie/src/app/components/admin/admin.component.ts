@@ -22,9 +22,17 @@ export class AdminComponent {
   animationAggiungiUtente:boolean = false;
   animationCloseAggiungiUtente:boolean = false;
 
+  animationListaUtenti:boolean = false;
+  animationCloseListaUtenti:boolean = false;
+
   username:string = "";
   email:string = "";
   passwordGenerica:any = "password";
+
+  listaUtenti:any;
+  lblAggiungiUtente:string = "";
+  coloreUtenteAggiunto:boolean = false;
+  coloreUtenteNONAggiunto:boolean = false;
 
   center: google.maps.LatLngLiteral = 
   {
@@ -54,7 +62,14 @@ export class AdminComponent {
   }
 
   apriAggiuntaUtente(){
-    this.animationAggiungiUtente = true;
+    if(this.animationAggiungiUtente == false){
+      this.animationAggiungiUtente = true;
+    }
+    if(this.animationListaUtenti == true){
+      this.animationCloseListaUtenti = true;
+      this.animationAggiungiUtente = true;
+      this.animationCloseAggiungiUtente = false;
+    }
   }
 
   chiudiAggiuntaUtente(){
@@ -63,7 +78,50 @@ export class AdminComponent {
     setTimeout(() => {
       this.animationAggiungiUtente = false;
       this.animationCloseAggiungiUtente = false;
+      this.animationCloseListaUtenti = false;
+
     }, 1000);
+  }
+
+  apriListaUtenti(){
+    if(this.animationListaUtenti == false){
+      this.animationListaUtenti = true;
+    }
+    
+    if(this.animationAggiungiUtente == true){
+      this.animationCloseAggiungiUtente = true;
+      this.animationListaUtenti = true;
+      this.animationCloseListaUtenti = false;
+    }
+    
+    let rq = this.server.inviaRichiesta("get", "/listaUtenti");
+    rq!.then((data:any) => {
+      console.log(data);
+      this.listaUtenti = data;
+    }).catch((error:any) => {
+      console.log(error);
+    });
+  }
+  chiudiListaUtenti(){
+    this.animationCloseListaUtenti = true;
+
+    setTimeout(() => {
+      this.animationListaUtenti = false;
+      this.animationCloseListaUtenti = false;
+      this.animationCloseAggiungiUtente = false;
+    }, 1000);
+  }
+
+  eliminaUtente(idUtente:any){
+    let rq = this.server.inviaRichiesta("delete", "/eliminaUtente", {idUtente: idUtente});
+    rq!.then((data:any) => {
+      console.log(data);
+    }).catch((error:any) => {
+      console.log(error);
+    });
+    this.listaUtenti = this.listaUtenti.filter((utente:any) => {
+      return utente._id != idUtente;
+    });
   }
 
   aggiungiUtente(){
@@ -71,8 +129,15 @@ export class AdminComponent {
     console.log(this.username, this.passwordGenerica, this.email);
     rq.then((data:any) => {
       console.log(data);
+      this.lblAggiungiUtente = "Utente aggiunto con successo";
+      this.coloreUtenteAggiunto = true;
+      this.coloreUtenteNONAggiunto = false;
     }).catch((error:any) => {
       console.log(error);
+      this.lblAggiungiUtente = "Errore durante l'aggiunta dell'utente";
+      this.coloreUtenteNONAggiunto = true;
+      this.coloreUtenteAggiunto = false;
     });
+    
   }
 }
