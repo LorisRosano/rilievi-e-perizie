@@ -85,6 +85,28 @@ body{
   transform: translateY(calc(50% + 30vh)) translateX(calc(50% + 12.5vw));
 }
 
+.pPassword{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+  width: 15vw;
+  height: 20vh;
+  background-color: #f4f4f4;
+  box-shadow: 0px 0px 10px 0px black;
+  background-color: rgb(180, 173, 173);
+  transition: background-color 0.5s ease;
+  grid-area: 1/1/2/2;
+
+}
+
+.rosso{
+  color: red;
+}
+.verde{
+  color: green;
+}
+
 #divLogin, #divPrimoAccesso{
   grid-area: 1/1/2/2;
   transform: translateY(calc(50% + 10vh));

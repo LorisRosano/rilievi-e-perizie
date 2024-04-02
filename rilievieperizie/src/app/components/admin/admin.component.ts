@@ -27,6 +27,9 @@ export class AdminComponent {
 
   username:string = "";
   email:string = "";
+  nome:string = "";
+  cognome:string = "";
+  sesso:string = "";
   passwordGenerica:any = "password";
 
   listaUtenti:any;
@@ -125,7 +128,7 @@ export class AdminComponent {
   }
 
   aggiungiUtente(){
-    let rq:any = this.server.inviaRichiesta("post", "/nuovoUtente", {username: this.username, password: this.passwordGenerica, email: this.email});
+    let rq:any = this.server.inviaRichiesta("post", "/nuovoUtente", {username: this.username, password: this.passwordGenerica, email: this.email, cognome: this.cognome, nome: this.nome, sesso: this.sesso});
     console.log(this.username, this.passwordGenerica, this.email);
     rq.then((data:any) => {
       console.log(data);

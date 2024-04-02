@@ -27,8 +27,11 @@
                     close
                 </span>
                 <form>
+                    <input type="text" placeholder="Nome" name="nome" [(ngModel)]="nome">
+                    <input type="text" placeholder="Cognome" name="cognome" [(ngModel)]="cognome">
                     <input type="text" placeholder="Nome Utente" name="username" [(ngModel)]="username">
                     <input type="text" placeholder="Email" name="email" [(ngModel)]="email">
+                    <input type="text" placeholder="Sesso" name="sesso" [(ngModel)]="sesso">
                     <button (click)="aggiungiUtente()">Aggiungi</button>
                     <p id="lblAggiungiUtente" [class.coloreAggiuntaUtente]="coloreUtenteAggiunto" [class.coloreAggiuntaUtente]="coloreUtenteNONAggiunto">{{lblAggiungiUtente}}</p>
                 </form>
@@ -44,7 +47,10 @@
                 </span>
                 <table>
                     <tr>
+                        <th>Nome utente</th>
                         <th>Nome</th>
+                        <th>Cognome</th>
+                        <th>Sesso</th>
                         <th>Email</th>
                         <th></th>
                     </tr>
@@ -54,6 +60,9 @@
                         {
                             <tr>
                                 <td>{{utente.username}}</td>
+                                <td>{{utente.nome}}</td>
+                                <td>{{utente.cognome}}</td>
+                                <td>{{utente.sesso}}</td>
                                 <td>{{utente.email}}</td>
                                 <td><span class="material-symbols-outlined" id="deleteUser" (click)="eliminaUtente(utente._id)">delete</span></td>
                             </tr>
