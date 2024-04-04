@@ -99,11 +99,13 @@ app.post("/api/nuovoUtente", async function(req, res, next){
     let cognome = req["body"]["cognome"];
     let nome = req["body"]["nome"];
     let sesso = req["body"]["sesso"];
+    let id = req["body"]["idUtente"];
+    console.log(id)
     console.log(username, password, email)
     const client = new MongoClient(connectionString);
     await client.connect();
     let collection = client.db(DBNAME).collection("utenti");
-    let rq = collection.insertOne({ "username": username, "password": password, "email": email, "cognome": cognome, "nome": nome, "sesso": sesso});
+    let rq = collection.insertOne({ "username": username, "password": password, "email": email, "cognome": cognome, "nome": nome, "sesso": sesso, "id": id});
     rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
     rq.finally(() => client.close());
@@ -137,6 +139,16 @@ app.delete("/api/eliminaUtente", async (req, res, next) => {
     await client.connect();
     let collection = client.db(DBNAME).collection("utenti");
     let rq = collection.deleteOne({ "_id": new ObjectId(idUtente)});
+    rq.then((data) => res.send(data));
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
+    rq.finally(() => client.close());
+});
+
+app.get("/api/getUtenti", async (req, res, next) => {
+    const client = new MongoClient(connectionString);
+    await client.connect();
+    let collection = client.db(DBNAME).collection("utenti");
+    let rq = collection.find().toArray();
     rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
     rq.finally(() => client.close());

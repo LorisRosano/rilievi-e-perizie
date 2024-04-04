@@ -8,6 +8,7 @@
     width: 100vw;
     overflow: hidden;
     font-family: exo;
+    --w-menu: 20vw;
   }
 
   #mainDiv{
@@ -34,7 +35,7 @@
       flex-direction: column;
       margin-left: auto;
       text-align: center;
-      width: 20vw;
+      width: var(--w-menu);
       height: 100vh;
       background-color: #8C8888;
       right: 0;
@@ -51,7 +52,7 @@
       text-align: center;
       position: absolute;
       z-index: -1;
-      width: 20vw;
+      width: var(--w-menu);
       height: 90vh;
       margin-bottom: 5vh;
       background-color: #353131;
@@ -74,7 +75,7 @@
       text-align: center;
       position: absolute;
       z-index: -1;
-      width: 20vw;
+      width: var(--w-menu);
       height: 90vh;
       margin-bottom: 5vh;
       background-color: #353131;
@@ -176,26 +177,28 @@
 
    @keyframes animRight{
     0%{
-      margin-right: 0vh;
-      width: 20vw;
+      width:  var(--w-menu);
+      transform: translateX(0vh);
     }
     100%{
-      margin-right: 40vh;
+      transform: translateX(-20vw);
       width: 40vw;
     }
   } 
 
   @keyframes animRightClose{
     0%{
-      margin-right: 40vh;
+      transform: translateX(-20vw);
       width: 40vw;
     }
     100%{
-      margin-right: 0vh;
-      width: 20vw;
+      width:  var(--w-menu);
+      transform: translateX(0vh);
       
     }
   } 
+
+  
   
   #mainDiv, #divMenu{
       grid-area: 1/1/2/2;

@@ -14,16 +14,17 @@
         <h1>Dashboard Admin</h1>
         <div id="divScelta">
             <p (click)="apriListaUtenti()">Lista utenti</p>
-            <p (click)="apriAggiuntaUtente()">Aggiungi Utente</p>
+            <p (click)="Apri('aggiungiUtente')">Aggiungi Utente</p>
             <p>Cerca Utente</p>
+            <p (click)="apriListaPerizie()">Lista Perizie</p>
         </div>
     </div>
 
     
-        <div id="divAggiungiUtente" [class.apriDivAggiungiUtente]="animationAggiungiUtente" [class.chiudiDivAggiungiUtente]="animationCloseAggiungiUtente">
+        <div id="divAggiungiUtente" [class.apriDivAggiungiUtente]="animazioni.apri.aggiungiUtente" [class.chiudiDivAggiungiUtente]="animazioni.chiudi.aggiungiUtente">
 
             <div id="divIntermedio">
-                <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="chiudiAggiuntaUtente()">
+                <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="ChiudiTutto()">
                     close
                 </span>
                 <form>
@@ -39,10 +40,10 @@
             
         </div>
 
-        <div id="divListaUtenti" [class.apriDivAggiungiUtente]="animationListaUtenti" [class.chiudiDivAggiungiUtente]="animationCloseListaUtenti">
+        <div id="divListaUtenti" [class.apriDivAggiungiUtente]="animazioni.apri.listaUtente" [class.chiudiDivAggiungiUtente]="animazioni.chiudi.listaUtente">
 
             <div id="divIntermedio">
-                <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="chiudiListaUtenti()">
+                <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="ChiudiTutto()">
                     close
                 </span>
                 <table>
