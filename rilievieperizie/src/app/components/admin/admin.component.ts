@@ -43,6 +43,10 @@ export class AdminComponent {
   passwordGenerica: any = "password";
 
   listaUtenti: any;
+  listaPerizie: any;
+
+  ausUtente:any;
+
   lblAggiungiUtente: string = "";
   coloreUtenteAggiunto: boolean = false;
   coloreUtenteNONAggiunto: boolean = false;
@@ -113,13 +117,20 @@ export class AdminComponent {
     });
   }
 
-  apriListaPerizie() {
+  apriListaPerizie(){
     this.Apri('listaPerizie')
 
-    let rq = this.server.inviaRichiesta("get", "/listaUtenti");
+    let rq = this.server.inviaRichiesta("get", "/listaPerizie");
     rq!.then((data: any) => {
       console.log(data);
-      this.listaUtenti = data;
+      this.listaPerizie = data.toSorted((a:any, b:any) => {
+        return a.codiceOperatore > b.codiceOperatore ? 1 : -1;
+      })
+      
+  
+      this.getUtenti();
+      
+      
     }).catch((error: any) => {
       console.log(error);
     });
@@ -168,6 +179,22 @@ export class AdminComponent {
         reject(error);
       });
 
+    });
+  }
+
+  stampaDataOra(s:any){
+    let [dataPerizia, ora] = s.split("T");
+    ora = ora.split(":")[0] + ":" + ora.split(":")[1];
+    return [dataPerizia, ora];
+  }
+
+  getUtenti(){
+    let rq = this.server.inviaRichiesta("get", "/listaUtenti");
+    rq!.then((data: any) => {
+      console.log(data);
+      this.listaUtenti = data;
+    }).catch((error: any) => {
+      console.log(error);
     });
   }
 }

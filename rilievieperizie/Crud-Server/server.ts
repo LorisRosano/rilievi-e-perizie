@@ -144,10 +144,31 @@ app.delete("/api/eliminaUtente", async (req, res, next) => {
     rq.finally(() => client.close());
 });
 
+app.get("/api/getUtentiByID", async (req, res, next) => {
+    let idUtente = req["query"]["idUtente"];
+    const client = new MongoClient(connectionString);
+    await client.connect();
+    let collection = client.db(DBNAME).collection("utenti");
+    let rq = collection.findOne({ "id": idUtente});
+    rq.then((data) => res.send(data));
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
+    rq.finally(() => client.close());
+});
+
 app.get("/api/getUtenti", async (req, res, next) => {
     const client = new MongoClient(connectionString);
     await client.connect();
     let collection = client.db(DBNAME).collection("utenti");
+    let rq = collection.find().toArray();
+    rq.then((data) => res.send(data));
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
+    rq.finally(() => client.close());
+});
+
+app.get("/api/listaPerizie", async (req, res, next) => {
+    const client = new MongoClient(connectionString);
+    await client.connect();
+    let collection = client.db(DBNAME).collection("perizie");
     let rq = collection.find().toArray();
     rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));

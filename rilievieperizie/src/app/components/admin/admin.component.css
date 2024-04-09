@@ -59,13 +59,11 @@
       bottom: 0;
       right: 0;
       border-radius: 3.5vh 0vh 0vh 3.5vh;
-      
-      
-      
       z-index: 2;
       --padding: 1rem;
       padding: var(--padding);
       contain: paint;
+      --widthFinale: 40vw;
   }
 
   #divListaUtenti{
@@ -82,13 +80,32 @@
       bottom: 0;
       right: 0;
       border-radius: 3.5vh 0vh 0vh 3.5vh;
-      
-      
-      
       z-index: 2;
       --padding: 1rem;
       padding: var(--padding);
       contain: paint;
+      --widthFinale: 40vw;
+  } 
+
+  #divListaPerizie{
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    text-align: center;
+    position: absolute;
+    z-index: -1;
+    width: var(--w-menu);
+    height: 90vh;
+    margin-bottom: 5vh;
+    background-color: #353131;
+    bottom: 0;
+    right: 0;
+    border-radius: 3.5vh 0vh 0vh 3.5vh;
+    z-index: 2;
+    --padding: 1rem;
+    padding: var(--padding);
+    contain: paint;
+    --widthFinale: 50vw;
   }
 
   #divIntermedio{
@@ -182,14 +199,14 @@
     }
     100%{
       transform: translateX(-20vw);
-      width: 40vw;
+      width: var(--widthFinale);
     }
   } 
 
   @keyframes animRightClose{
     0%{
       transform: translateX(-20vw);
-      width: 40vw;
+      width: var(--widthFinale);
     }
     100%{
       width:  var(--w-menu);
@@ -197,6 +214,26 @@
       
     }
   } 
+
+  #divListaPerizie table{
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  #divListaPerizie td{
+    padding: 1rem;
+    width: 35vw;
+    text-align: center;
+    color: white;
+  }
+
+  #tdCodOperatore{
+    width: 5vw !important;
+  }
+
+  #divListaPerizie #divIntermedio{
+    width: 100%;
+  }
 
   
   

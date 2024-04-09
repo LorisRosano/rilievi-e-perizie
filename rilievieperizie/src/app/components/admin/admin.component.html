@@ -1,13 +1,12 @@
-
 <div id="mainDiv">
     <div id="divMappa">
         <google-map height="400px" width="72vw" height="90vh" [center]="center" [zoom]="zoom">
             <map-polyline [path]="vertices"></map-polyline>
 
             @for (marker of markers; track $index) {
-                <map-marker [position]="marker.position" [title]="marker.title" (click)="infoMarker()"></map-marker>
+            <map-marker [position]="marker.position" [title]="marker.title" (click)="infoMarker()"></map-marker>
             }
-            
+
         </google-map>
     </div>
     <div id="divMenu">
@@ -20,60 +19,106 @@
         </div>
     </div>
 
-    
-        <div id="divAggiungiUtente" [class.apriDivAggiungiUtente]="animazioni.apri.aggiungiUtente" [class.chiudiDivAggiungiUtente]="animazioni.chiudi.aggiungiUtente">
 
-            <div id="divIntermedio">
-                <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="ChiudiTutto()">
-                    close
-                </span>
-                <form>
-                    <input type="text" placeholder="Nome" name="nome" [(ngModel)]="nome">
-                    <input type="text" placeholder="Cognome" name="cognome" [(ngModel)]="cognome">
-                    <input type="text" placeholder="Nome Utente" name="username" [(ngModel)]="username">
-                    <input type="text" placeholder="Email" name="email" [(ngModel)]="email">
-                    <input type="text" placeholder="Sesso" name="sesso" [(ngModel)]="sesso">
-                    <button (click)="aggiungiUtente()">Aggiungi</button>
-                    <p id="lblAggiungiUtente" [class.coloreAggiuntaUtente]="coloreUtenteAggiunto" [class.coloreAggiuntaUtente]="coloreUtenteNONAggiunto">{{lblAggiungiUtente}}</p>
-                </form>
-            </div>
-            
+    <div id="divAggiungiUtente" [class.apriDivAggiungiUtente]="animazioni.apri.aggiungiUtente"
+        [class.chiudiDivAggiungiUtente]="animazioni.chiudi.aggiungiUtente">
+
+        <div id="divIntermedio">
+            <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="ChiudiTutto()">
+                close
+            </span>
+            <form>
+                <input type="text" placeholder="Nome" name="nome" [(ngModel)]="nome">
+                <input type="text" placeholder="Cognome" name="cognome" [(ngModel)]="cognome">
+                <input type="text" placeholder="Nome Utente" name="username" [(ngModel)]="username">
+                <input type="text" placeholder="Email" name="email" [(ngModel)]="email">
+                <input type="text" placeholder="Sesso" name="sesso" [(ngModel)]="sesso">
+                <button (click)="aggiungiUtente()">Aggiungi</button>
+                <p id="lblAggiungiUtente" [class.coloreAggiuntaUtente]="coloreUtenteAggiunto"
+                    [class.coloreAggiuntaUtente]="coloreUtenteNONAggiunto">{{lblAggiungiUtente}}</p>
+            </form>
         </div>
 
-        <div id="divListaUtenti" [class.apriDivAggiungiUtente]="animazioni.apri.listaUtente" [class.chiudiDivAggiungiUtente]="animazioni.chiudi.listaUtente">
+    </div>
 
-            <div id="divIntermedio">
-                <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="ChiudiTutto()">
-                    close
-                </span>
-                <table>
+    <div id="divListaUtenti" [class.apriDivAggiungiUtente]="animazioni.apri.listaUtente"
+        [class.chiudiDivAggiungiUtente]="animazioni.chiudi.listaUtente">
+
+        <div id="divIntermedio">
+            <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="ChiudiTutto()">
+                close
+            </span>
+            <table>
+                <tr>
+                    <th>Nome utente</th>
+                    <th>Nome</th>
+                    <th>Cognome</th>
+                    <th>Sesso</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+                @for(utente of listaUtenti; track $index)
+                {
+                @if( utente.username != "" && utente.username != "admin")
+                {
+                <tr>
+                    <td>{{utente.username}}</td>
+                    <td>{{utente.nome}}</td>
+                    <td>{{utente.cognome}}</td>
+                    <td>{{utente.sesso}}</td>
+                    <td>{{utente.email}}</td>
+                    <td><span class="material-symbols-outlined" id="deleteUser"
+                            (click)="eliminaUtente(utente._id)">delete</span></td>
+                </tr>
+                }
+                }
+            </table>
+        </div>
+
+    </div>
+
+    <div id="divListaPerizie" [class.apriDivAggiungiUtente]="animazioni.apri.listaPerizie"
+        [class.chiudiDivAggiungiUtente]="animazioni.chiudi.listaPerizie">
+
+        <div id="divIntermedio">
+            <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="ChiudiTutto()">
+                close
+            </span>
+            <table>
+                <tr>
+                    <th>ID Operatore</th>
+                    <th>Nome</th>
+                    <th>Cognome</th>
+                    <th>Data</th>
+                    <th>Ora</th>
+                    <th>Coordinate</th>
+                    <th>Descrizione</th>
+                    <th></th>
+                </tr>
+                @for(perizia of listaPerizie; track $index)
+                {
                     <tr>
-                        <th>Nome utente</th>
-                        <th>Nome</th>
-                        <th>Cognome</th>
-                        <th>Sesso</th>
-                        <th>Email</th>
-                        <th></th>
-                    </tr>
-                    @for(utente of listaUtenti; track $index)
-                    { 
-                        @if( utente.username != "" && utente.username != "admin")
-                        {
-                            <tr>
-                                <td>{{utente.username}}</td>
-                                <td>{{utente.nome}}</td>
-                                <td>{{utente.cognome}}</td>
-                                <td>{{utente.sesso}}</td>
-                                <td>{{utente.email}}</td>
-                                <td><span class="material-symbols-outlined" id="deleteUser" (click)="eliminaUtente(utente._id)">delete</span></td>
-                            </tr>
+                        <td id="tdCodOperatore">{{perizia.codiceOperatore}}</td>
+                        
+                        @for (utenti of listaUtenti; track $index) {
+                            @if(utenti.id == perizia.codiceOperatore){
+                                <td>{{utenti.nome}}</td>
+                                <td>{{utenti.cognome}}</td>
+                            }
+                            
                         }
-                    }
-                </table>
-            </div>
-            
+                        <td>{{stampaDataOra(perizia.dataOra)[0]}}</td>
+                        <td>{{stampaDataOra(perizia.dataOra)[1]}}</td>
+                        <td>{{perizia.coordinate}}</td>
+                        <td>{{perizia.descrizione}}</td>
+                        <td><span class="material-symbols-outlined" id="deleteUser">photo_camera</span></td>
+                    </tr>
+                }
+            </table>
         </div>
-    
-    
-      
-</div> 
+
+    </div>
+
+
+
+</div>
