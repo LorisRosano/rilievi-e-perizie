@@ -1,21 +1,36 @@
 <div id="mainDiv">
     <div id="divMappa">
-        <google-map height="400px" width="72vw" height="90vh" [center]="center" [zoom]="zoom" (mapClick)="aggiungiPerizia()">
+        <google-map id="mappa" height="400px" width="72vw" height="90vh" [center]="center" [zoom]="zoom" (mapClick)="aggiungiPerizia($event)">
             <map-polyline [path]="vertices"></map-polyline>
 
             @for (marker of markers; track $index) {
-            <map-marker [position]="marker.position" [title]="marker.title" (click)="infoMarker()"></map-marker>
+            <map-marker [position]="marker.position" [title]="marker.title" (mapClick)="infoMarker($event, marker)"></map-marker>
             }
+            <div id="divNuovaPerizia">
+                <button id="btnAggiungiPerizia">Aggiungi Perizia</button>
+        
+            </div>
 
+            
+            
         </google-map>
-        <div id="divNuovaPerizia">
-            <button id="btnAggiungiPerizia" (click)="aggiungiPerizia()">Aggiungi Perizia</button>
-    
-        </div>
-        <div id="divAggiungiPerizia">
 
-        </div>
+       
+        
     </div>
+
+    @if(visualizzaDivInfoMarker){
+        <div id="divInfoMarker" [class.togliOpacity]="togliOpacity">
+            <span>
+                <div [class.chiudiInfoMarker]="chiudiInfoMarker">
+                    <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="chiudiDivInfoMarker()">
+                        close
+                    </span>
+                </div>
+            </span>
+        </div>
+        
+    }
     
     <div id="divMenu">
         <h1>Dashboard Admin</h1>

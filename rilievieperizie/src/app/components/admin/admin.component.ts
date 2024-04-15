@@ -4,7 +4,8 @@ import { RouterModule } from '@angular/router';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { ServerService } from '../../servizi/server.service';
 import { FormsModule } from '@angular/forms';
-
+import MapMouseEvent = google.maps.MapMouseEvent;
+import { MapMarker } from '@angular/google-maps';
 
 @Component({
   selector: 'AdminComponent',
@@ -16,7 +17,7 @@ import { FormsModule } from '@angular/forms';
 export class AdminComponent {
   title = 'Admin'
 
-  markers: any[] = [];
+  markers: any[];
   markerTitle: any;
 
   public animazioni =
@@ -53,6 +54,10 @@ export class AdminComponent {
 
   divAggiungiPerizia:boolean = false;
 
+  visualizzaDivInfoMarker:boolean = false;
+  chiudiInfoMarker:boolean = false;
+  togliOpacity:boolean = false;
+
   center: google.maps.LatLngLiteral =
     {
       lat: 44.5558363,
@@ -77,8 +82,9 @@ export class AdminComponent {
 
   }
 
-  infoMarker() {
-
+  infoMarker(event: MapMouseEvent, marker: any) {
+    console.log("porcodio");
+    this.visualizzaDivInfoMarker = true;
   }
 
   Apri(nome: string) {
@@ -201,7 +207,34 @@ export class AdminComponent {
     });
   }
 
-  aggiungiPerizia(){
-    console.log("porco")
+  aggiungiPerizia(event: MapMouseEvent){
+
+    console.log(event.latLng!.toJSON());
+
+    let lat = event.latLng!.toJSON().lat;
+    let lng = event.latLng!.toJSON().lng;
+
+    this.createMarker(lat, lng);
+    
+    
+
+    
+  }
+
+  createMarker(lat:any, lng:any){
+    this.markers.push({
+      position: {
+        lat: lat,
+        lng: lng
+      },
+      title: this.markerTitle
+    });
+
+  }
+
+  chiudiDivInfoMarker(){
+    this.visualizzaDivInfoMarker = false;
+    this.chiudiInfoMarker = true;
+    this.togliOpacity = true;
   }
 }
