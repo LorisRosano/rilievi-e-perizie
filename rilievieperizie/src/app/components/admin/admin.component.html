@@ -1,6 +1,6 @@
 <div id="mainDiv">
     <div id="divMappa">
-        <google-map height="400px" width="72vw" height="90vh" [center]="center" [zoom]="zoom">
+        <google-map height="400px" width="72vw" height="90vh" [center]="center" [zoom]="zoom" (mapClick)="aggiungiPerizia()">
             <map-polyline [path]="vertices"></map-polyline>
 
             @for (marker of markers; track $index) {
@@ -8,7 +8,15 @@
             }
 
         </google-map>
+        <div id="divNuovaPerizia">
+            <button id="btnAggiungiPerizia" (click)="aggiungiPerizia()">Aggiungi Perizia</button>
+    
+        </div>
+        <div id="divAggiungiPerizia">
+
+        </div>
     </div>
+    
     <div id="divMenu">
         <h1>Dashboard Admin</h1>
         <div id="divScelta">

@@ -16,7 +16,7 @@ import { FormsModule } from '@angular/forms';
 export class AdminComponent {
   title = 'Admin'
 
-  markers: any;
+  markers: any[] = [];
   markerTitle: any;
 
   public animazioni =
@@ -51,6 +51,8 @@ export class AdminComponent {
   coloreUtenteAggiunto: boolean = false;
   coloreUtenteNONAggiunto: boolean = false;
 
+  divAggiungiPerizia:boolean = false;
+
   center: google.maps.LatLngLiteral =
     {
       lat: 44.5558363,
@@ -62,6 +64,7 @@ export class AdminComponent {
     lat: 44.5558363,
     lng: 7.7360397
   }];
+
 
   constructor(private server: ServerService, public router: Router) {
     this.markers = [{
@@ -196,5 +199,9 @@ export class AdminComponent {
     }).catch((error: any) => {
       console.log(error);
     });
+  }
+
+  aggiungiPerizia(){
+    console.log("porco")
   }
 }
