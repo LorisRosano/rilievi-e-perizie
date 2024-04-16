@@ -377,6 +377,39 @@ p:hover::after {
   animation: animInfoMarker 0.7s forwards ease-out;
 }
 
+#divInfoMarker > span > div > span {
+  margin: 1vw;
+}
+
+#divInfoMarker > span > div > span:hover {
+  animation: xRossa 0.5s forwards;
+}
+
+@keyframes xRossa {
+  0% {
+    color: white;
+  }
+
+  100% {
+    color: red;
+  }
+}
+
+#divInfoMarker > span > div > span:not(:hover) {
+  animation: xNotRossa 0.5s forwards;
+}
+
+@keyframes xNotRossa {
+  0% {
+    
+    color: red;
+  }
+
+  100% {
+    color: white;
+  }
+}
+
 @keyframes animInfoMarker{
   0% {
     transform: translateY(200%);
@@ -421,11 +454,11 @@ p:hover::after {
 
 @keyframes chiudiInfoMarker{
   0% {
-    transform: translateY(200%);
+    transform: translateY(0%);
   }
 
   100% {
-    transform: translateY(0%);
+    transform: translateY(200%);
   }
 }
 
@@ -435,10 +468,20 @@ p:hover::after {
 
 @keyframes togliOpacity{
   0% {
-    opacity: 1;
+    background-color: #000a;
   }
 
   100% {
-    opacity: 0;
+    background-color: transparent;
   }
+}
+
+.cambiaCursor{
+  cursor: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/9632/heart.svg), auto !important;
+
+}
+
+google-map{
+  cursor: inherit !important;
+  
 }

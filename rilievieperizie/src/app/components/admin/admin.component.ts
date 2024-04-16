@@ -58,6 +58,8 @@ export class AdminComponent {
   chiudiInfoMarker:boolean = false;
   togliOpacity:boolean = false;
 
+  btnAggiungiPerizia:boolean = false;
+
   center: google.maps.LatLngLiteral =
     {
       lat: 44.5558363,
@@ -83,8 +85,13 @@ export class AdminComponent {
   }
 
   infoMarker(event: MapMouseEvent, marker: any) {
-    console.log("porcodio");
     this.visualizzaDivInfoMarker = true;
+  }
+
+  chiudiDivInfoMarker(){
+    this.visualizzaDivInfoMarker = false;
+    // this.chiudiInfoMarker = true;
+    // this.togliOpacity = true;
   }
 
   Apri(nome: string) {
@@ -230,11 +237,5 @@ export class AdminComponent {
       title: this.markerTitle
     });
 
-  }
-
-  chiudiDivInfoMarker(){
-    this.visualizzaDivInfoMarker = false;
-    this.chiudiInfoMarker = true;
-    this.togliOpacity = true;
-  }
+  }  
 }

@@ -14,3 +14,6 @@ input{
 button{
   font-family: inherit;
 }
+#mappa > div.map-container > div > div.gm-style > div:nth-child(1){
+  cursor: inherit !important;
+}
