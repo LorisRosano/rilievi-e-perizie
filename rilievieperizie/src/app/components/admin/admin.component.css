@@ -372,7 +372,24 @@ p:hover::after {
   bottom:35vh;
   left: 60vh;
   right: 60vh;
+  transform: translateY(200%);
+  animation: animInfoMarker 0.7s forwards ease-out;
+}
 
+#divInfoPerizia > span > div {
+  display: flex;  
+  align-items: center;
+  flex-direction: column;
+  background-color: #222222;
+  color: white;
+  border-radius: 3.5vh;
+  position: absolute;
+  top: 15vh;
+  bottom:15vh;
+  left: 60vh;
+  right: 60vh;
+  padding: 5vh;
+  gap: 2vh;
   transform: translateY(200%);
   animation: animInfoMarker 0.7s forwards ease-out;
 }
@@ -381,7 +398,15 @@ p:hover::after {
   margin: 1vw;
 }
 
+#divInfoPerizia > span > div > span {
+  margin: 1vw;
+}
+
 #divInfoMarker > span > div > span:hover {
+  animation: xRossa 0.5s forwards;
+}
+
+#divInfoPerizia > span > div > span:hover {
   animation: xRossa 0.5s forwards;
 }
 
@@ -396,6 +421,10 @@ p:hover::after {
 }
 
 #divInfoMarker > span > div > span:not(:hover) {
+  animation: xNotRossa 0.5s forwards;
+}
+
+#divInfoPerizia > span > div > span:not(:hover) {
   animation: xNotRossa 0.5s forwards;
 }
 
@@ -429,6 +458,17 @@ p:hover::after {
   inset: 0;
   padding-right: var(--w-menu);
   animation: animBGColorInfoMarker 1s forwards;
+} 
+
+#divInfoPerizia{
+  height: 100vh;
+  width: 100vw;
+  background-color: #000a;
+  z-index: 50;
+  position: fixed;
+  inset: 0;
+  padding-right: var(--w-menu);
+  animation: animBGColorInfoMarker 1s forwards;
 }
 
 @keyframes animBGColorInfoMarker{
@@ -443,6 +483,12 @@ p:hover::after {
 }
 
 #divInfoMarker > span{
+  position:relative;
+  display: block;
+  height: 100%;
+}
+
+#divInfoPerizia > span{
   position:relative;
   display: block;
   height: 100%;
@@ -485,3 +531,22 @@ google-map{
   cursor: inherit !important;
   
 }
+
+#datepicker{
+  width: 20vw;
+  height: 3rem;
+  border: 1px solid #000;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 3.5vh;
+}
+
+#descPerizia{
+  width: 20vw;
+  height: 15vh;
+  border: 1px solid #000;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 3.5vh;
+}
+

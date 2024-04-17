@@ -1,30 +1,53 @@
 <div id="mainDiv">
     <div id="divMappa" [class.cambiaCursor]="btnAggiungiPerizia">
-        <google-map id="mappa" height="400px" width="72vw" height="90vh" [center]="center" [zoom]="zoom" (mapClick)="btnAggiungiPerizia && aggiungiPerizia($event)" >
+        <google-map id="mappa" height="400px" width="72vw" height="90vh" [center]="center" [zoom]="zoom"
+            (mapClick)="btnAggiungiPerizia && aggiungiPerizia($event)">
             <map-polyline [path]="vertices"></map-polyline>
 
             @for (marker of markers; track $index) {
-            <map-marker [position]="marker.position" [title]="marker.title" (mapClick)="infoMarker($event, marker)"></map-marker>
+            <map-marker [position]="marker.position" [title]="marker.title"
+                (mapClick)="infoMarker($event, marker)"></map-marker>
             }
             <div id="divNuovaPerizia">
-                <button id="btnAggiungiPerizia" (click)="btnAggiungiPerizia = !btnAggiungiPerizia">Aggiungi Perizia</button>
+                <button id="btnAggiungiPerizia" (click)="btnAggiungiPerizia = !btnAggiungiPerizia">Aggiungi
+                    Perizia</button>
             </div>
-        </google-map>   
+        </google-map>
     </div>
 
     @if(visualizzaDivInfoMarker){
-        <div id="divInfoMarker" [class.togliOpacity]="togliOpacity">
-            <span>
-                <div [class.chiudiInfoMarker]="chiudiInfoMarker">
-                    <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="chiudiDivInfoMarker()">
-                        close
-                    </span>
-                </div>
-            </span>
-        </div>
-        
+    <div id="divInfoMarker" [class.togliOpacity]="togliOpacity">
+        <span>
+            <div [class.chiudiInfoMarker]="chiudiInfoMarker">
+                <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="chiudiDivInfoMarker()">
+                    close
+                </span>
+            </div>
+        </span>
+    </div>
+
     }
-    
+
+    @if(visualizzaDivInfoPerizia){
+    <div id="divInfoPerizia">
+        <span>
+            <div>
+                <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="chiudiDivInfoPerizia()">
+                    close
+                </span>
+                <label for="datetimepicker">Data e Ora</label>
+                <input type="datetime-local" id="datetimepicker" name="datetimepicker">
+
+                <label for="descPerizia">Descrizione</label>
+                <textarea id="descPerizia" name="descPerizia" rows="4" cols="50"></textarea>
+
+                <button>Aggiungi perizia</button>
+            </div>
+        </span>
+    </div>
+
+    }
+
     <div id="divMenu">
         <h1>Dashboard Admin</h1>
         <div id="divScelta">
@@ -113,22 +136,22 @@
                 </tr>
                 @for(perizia of listaPerizie; track $index)
                 {
-                    <tr>
-                        <td id="tdCodOperatore">{{perizia.codiceOperatore}}</td>
-                        
-                        @for (utenti of listaUtenti; track $index) {
-                            @if(utenti.id == perizia.codiceOperatore){
-                                <td>{{utenti.nome}}</td>
-                                <td>{{utenti.cognome}}</td>
-                            }
-                            
-                        }
-                        <td>{{stampaDataOra(perizia.dataOra)[0]}}</td>
-                        <td>{{stampaDataOra(perizia.dataOra)[1]}}</td>
-                        <td>{{perizia.coordinate}}</td>
-                        <td>{{perizia.descrizione}}</td>
-                        <td><span class="material-symbols-outlined" id="deleteUser">photo_camera</span></td>
-                    </tr>
+                <tr>
+                    <td id="tdCodOperatore">{{perizia.codiceOperatore}}</td>
+
+                    @for (utenti of listaUtenti; track $index) {
+                    @if(utenti.id == perizia.codiceOperatore){
+                    <td>{{utenti.nome}}</td>
+                    <td>{{utenti.cognome}}</td>
+                    }
+
+                    }
+                    <td>{{stampaDataOra(perizia.dataOra)[0]}}</td>
+                    <td>{{stampaDataOra(perizia.dataOra)[1]}}</td>
+                    <td>{{perizia.coordinate}}</td>
+                    <td>{{perizia.descrizione}}</td>
+                    <td><span class="material-symbols-outlined" id="deleteUser">photo_camera</span></td>
+                </tr>
                 }
             </table>
         </div>

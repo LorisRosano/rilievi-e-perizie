@@ -46,6 +46,8 @@ export class AdminComponent {
   listaUtenti: any;
   listaPerizie: any;
 
+  idPeriziaCorrente:number = 0;
+
   ausUtente:any;
 
   lblAggiungiUtente: string = "";
@@ -59,6 +61,7 @@ export class AdminComponent {
   togliOpacity:boolean = false;
 
   btnAggiungiPerizia:boolean = false;
+  visualizzaDivInfoPerizia:boolean = false;
 
   ngOnInit(){
     this.caricaPerizie();
@@ -79,17 +82,19 @@ export class AdminComponent {
   }
 
   aggiornaMarker(){
-    console.log(this.listaPerizie)
     this.listaPerizie.forEach((perizia: any) => {
       this.createMarker(perizia.lat, perizia.lng);
+      this.idPeriziaCorrente++;
     })
+    this.idPeriziaCorrente++;
   }
+
+  
 
   caricaUtenti(){
     let rq = this.server.inviaRichiesta("get", "/listaUtenti");
     rq!.then((data: any) => {
       this.listaUtenti = data;
-      console.log(this.listaUtenti);
     }).catch((error: any) => {
       console.log(error);
     });
@@ -217,23 +222,31 @@ export class AdminComponent {
 
   aggiungiPerizia(event: MapMouseEvent){
 
-    console.log(event.latLng!.toJSON());
-
     let lat = event.latLng!.toJSON().lat;
     let lng = event.latLng!.toJSON().lng;
 
     this.createMarker(lat, lng);
     
+    this.aggiungiInfoPerizia();
     
-
     
   }
 
+  aggiungiInfoPerizia(){
+    this.visualizzaDivInfoPerizia = true;
+  }
+
+  chiudiDivInfoPerizia(){
+    this.visualizzaDivInfoPerizia = false;
+  }
+
   createMarker(lat:any, lng:any){
+    console.log(lat, lng);
+    
     this.markers.push({
       position: {
-        lat: lat,
-        lng: lng
+        lat: parseFloat(lat),
+        lng: parseFloat(lng)
       },
       title: this.markerTitle
     });
