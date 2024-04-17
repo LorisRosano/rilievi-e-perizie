@@ -60,6 +60,41 @@ export class AdminComponent {
 
   btnAggiungiPerizia:boolean = false;
 
+  ngOnInit(){
+    this.caricaPerizie();
+    this.caricaUtenti();
+  }
+
+  caricaPerizie(){
+    let rq = this.server.inviaRichiesta("get", "/listaPerizie");
+    rq!.then((data: any) => {
+      this.listaPerizie = data;
+      console.log(this.listaPerizie);
+      this.aggiornaMarker();
+    }).catch((error: any) => {
+      console.log(error);
+    });
+
+   
+  }
+
+  aggiornaMarker(){
+    console.log(this.listaPerizie)
+    this.listaPerizie.forEach((perizia: any) => {
+      this.createMarker(perizia.lat, perizia.lng);
+    })
+  }
+
+  caricaUtenti(){
+    let rq = this.server.inviaRichiesta("get", "/listaUtenti");
+    rq!.then((data: any) => {
+      this.listaUtenti = data;
+      console.log(this.listaUtenti);
+    }).catch((error: any) => {
+      console.log(error);
+    });
+  }
+
   center: google.maps.LatLngLiteral =
     {
       lat: 44.5558363,
@@ -121,35 +156,11 @@ export class AdminComponent {
   }
 
   apriListaUtenti() {
-
     this.Apri('listaUtente');
-
-    let rq = this.server.inviaRichiesta("get", "/listaUtenti");
-    rq!.then((data: any) => {
-      console.log(data);
-      this.listaUtenti = data;
-    }).catch((error: any) => {
-      console.log(error);
-    });
   }
 
   apriListaPerizie(){
-    this.Apri('listaPerizie')
-
-    let rq = this.server.inviaRichiesta("get", "/listaPerizie");
-    rq!.then((data: any) => {
-      console.log(data);
-      this.listaPerizie = data.toSorted((a:any, b:any) => {
-        return a.codiceOperatore > b.codiceOperatore ? 1 : -1;
-      })
-      
-  
-      this.getUtenti();
-      
-      
-    }).catch((error: any) => {
-      console.log(error);
-    });
+    this.Apri('listaPerizie');
   }
 
   eliminaUtente(idUtente: any) {
@@ -202,16 +213,6 @@ export class AdminComponent {
     let [dataPerizia, ora] = s.split("T");
     ora = ora.split(":")[0] + ":" + ora.split(":")[1];
     return [dataPerizia, ora];
-  }
-
-  getUtenti(){
-    let rq = this.server.inviaRichiesta("get", "/listaUtenti");
-    rq!.then((data: any) => {
-      console.log(data);
-      this.listaUtenti = data;
-    }).catch((error: any) => {
-      console.log(error);
-    });
   }
 
   aggiungiPerizia(event: MapMouseEvent){
