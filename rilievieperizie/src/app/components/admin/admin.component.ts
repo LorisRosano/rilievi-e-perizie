@@ -17,24 +17,30 @@ import { MapMarker } from '@angular/google-maps';
 export class AdminComponent {
   title = 'Admin'
 
-  markers: any[];
-  markerTitle: any;
-
   public animazioni =
     {
       apri: {
         listaUtente: false,
         aggiungiUtente: false,
+        cercaUtente: false,
         listaPerizie: false,
       },
       chiudi: {
         listaUtente: false,
         aggiungiUtente: false,
+        cercaUtente: false,
         listaPerizie: false,
       }
     }
 
-  
+  sedeCentrale = {
+    "lat": 44.5558363,
+    "lng": 7.7360397
+  }
+
+  markers: any[];
+  markerTitle: any;
+  indirizzo: any;
 
   username: string = "";
   email: string = "";
@@ -42,6 +48,13 @@ export class AdminComponent {
   cognome: string = "";
   sesso: string = "";
   passwordGenerica: any = "password";
+
+  userRicerca: string = "";
+  utenteCercato:any;
+  perizieUtenteCercato:any;
+
+  tableNascosta:boolean = true;
+  nascondiPerizie:boolean = true;
 
   listaUtenti: any;
   listaPerizie: any;
@@ -77,8 +90,6 @@ export class AdminComponent {
     }).catch((error: any) => {
       console.log(error);
     });
-
-   
   }
 
   aggiornaMarker(){
@@ -88,8 +99,6 @@ export class AdminComponent {
     })
     this.idPeriziaCorrente++;
   }
-
-  
 
   caricaUtenti(){
     let rq = this.server.inviaRichiesta("get", "/listaUtenti");
@@ -102,8 +111,8 @@ export class AdminComponent {
 
   center: google.maps.LatLngLiteral =
     {
-      lat: 44.5558363,
-      lng: 7.7360397
+      lat: this.sedeCentrale.lat,
+      lng: this.sedeCentrale.lng
     };
 
   zoom = 16;
@@ -153,6 +162,7 @@ export class AdminComponent {
 
   ChiudiTutto(){
     console.log(this.animazioni)
+    this.pulisciRicerca();
     const { apri, chiudi } = this.animazioni;
     const aperti = Object.keys(apri).filter((c) => apri[c as keyof typeof apri]);
     Object.keys(apri).forEach((c) => apri[c as keyof typeof apri] = false)
@@ -166,6 +176,10 @@ export class AdminComponent {
 
   apriListaPerizie(){
     this.Apri('listaPerizie');
+  }
+
+  apriCercaUtente(){
+    this.Apri('cercaUtente');
   }
 
   eliminaUtente(idUtente: any) {
@@ -199,6 +213,39 @@ export class AdminComponent {
 
   }
 
+  cercaUtente(){
+    this.tableNascosta = false;
+    this.nascondiPerizie = false;
+    let rq = this.server.inviaRichiesta("get", "/cercaUtente", {username: this.userRicerca});
+    rq!.then((data: any) => {
+      this.utenteCercato = data;
+      this.filtraPerizie(this.utenteCercato.id);
+    }).catch((error: any) => {
+      console.log(error);
+    });
+  }
+
+  filtraPerizie(idUtente:any){
+    let rq = this.server.inviaRichiesta("get", "/perizieById", {idUtente: idUtente});
+    rq!.then((data: any) => {
+      this.perizieUtenteCercato = data;
+      console.log(this.perizieUtenteCercato);
+    }).catch((error: any) => {
+      console.log(error);
+    });
+  }
+
+  pulisciRicerca(){
+    this.tableNascosta = true;
+    this.utenteCercato = "";
+    this.perizieUtenteCercato = "";
+    this.nascondiPerizie = true;
+  }
+
+  editUtente(){
+
+  }
+
   getNuovoID() {
     return new Promise((resolve, reject) => {
       let id: any;
@@ -220,10 +267,31 @@ export class AdminComponent {
     return [dataPerizia, ora];
   }
 
+  indirizzoPerizia(lat:any, lng:any){
+    // const request: google.maps.DirectionsRequest = {
+    //   destination: { lat: lat, lng: lng },
+    //   origin: { lat: this.sedeCentrale?.lat!, lng: this.sedeCentrale?.lng! },
+    //   travelMode: google.maps.TravelMode.DRIVING,
+    // };
+
+    // this.indirizzo = this.mapDirectionsService.route(request).pipe(
+    //   map((response) => {
+    //     this.perizieService.markerPositions = []
+
+    //     this.startAddress = response.result?.routes[0].legs[0].start_address!;
+    //     this.endAddress = response.result?.routes[0].legs[0].end_address!;
+    //     this.distance = response.result?.routes[0].legs[0].distance!.text!;
+    //     this.duration = response.result?.routes[0].legs[0].duration!.text!;
+
+    //     return response.result;
+    //   }),
+    // );
+  }
+
   aggiungiPerizia(event: MapMouseEvent){
 
-    let lat = event.latLng!.toJSON().lat;
-    let lng = event.latLng!.toJSON().lng;
+    let lat = event.latLng!.toJSON().lat - 0.00059;
+    let lng = event.latLng!.toJSON().lng + 0.00025;
 
     this.createMarker(lat, lng);
     

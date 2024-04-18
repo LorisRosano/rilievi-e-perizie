@@ -174,6 +174,28 @@ app.get("/api/listaPerizie", async (req, res, next) => {
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
     rq.finally(() => client.close());
 });
+
+app.get("/api/cercaUtente", async (req, res, next) => {
+    let username = req["query"]["username"];
+    const client = new MongoClient(connectionString);
+    await client.connect();
+    let collection = client.db(DBNAME).collection("utenti");
+    let rq = collection.findOne({ "username": username});
+    rq.then((data) => res.send(data));
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
+    rq.finally(() => client.close());
+});
+
+app.get("/api/perizieById", async (req, res, next) => {
+    let idUtente = req["query"]["idUtente"];
+    const client = new MongoClient(connectionString);
+    await client.connect();
+    let collection = client.db(DBNAME).collection("perizie");
+    let rq = collection.find({ "codiceOperatore": idUtente}).toArray();
+    rq.then((data) => res.send(data));
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
+    rq.finally(() => client.close());
+});
 //********************************************************************************************//
 // Default route e gestione degli errori
 //********************************************************************************************//

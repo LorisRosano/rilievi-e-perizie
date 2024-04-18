@@ -19,7 +19,7 @@
     <div id="divInfoMarker" [class.togliOpacity]="togliOpacity">
         <span>
             <div [class.chiudiInfoMarker]="chiudiInfoMarker">
-                <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="chiudiDivInfoMarker()">
+                <span class="material-symbols-outlined" id="xClose" (click)="chiudiDivInfoMarker()">
                     close
                 </span>
             </div>
@@ -32,7 +32,7 @@
     <div id="divInfoPerizia">
         <span>
             <div>
-                <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="chiudiDivInfoPerizia()">
+                <span class="material-symbols-outlined" id="xClose" (click)="chiudiDivInfoPerizia()">
                     close
                 </span>
                 <label for="datetimepicker">Data e Ora</label>
@@ -53,7 +53,7 @@
         <div id="divScelta">
             <p (click)="apriListaUtenti()">Lista utenti</p>
             <p (click)="Apri('aggiungiUtente')">Aggiungi Utente</p>
-            <p>Cerca Utente</p>
+            <p (click)="apriCercaUtente()">Cerca Utente</p>
             <p (click)="apriListaPerizie()">Lista Perizie</p>
         </div>
     </div>
@@ -63,7 +63,7 @@
         [class.chiudiDivAggiungiUtente]="animazioni.chiudi.aggiungiUtente">
 
         <div id="divIntermedio">
-            <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="ChiudiTutto()">
+            <span class="material-symbols-outlined" id="xClose" (click)="ChiudiTutto()">
                 close
             </span>
             <form>
@@ -84,7 +84,7 @@
         [class.chiudiDivAggiungiUtente]="animazioni.chiudi.listaUtente">
 
         <div id="divIntermedio">
-            <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="ChiudiTutto()">
+            <span class="material-symbols-outlined" id="xClose" (click)="ChiudiTutto()">
                 close
             </span>
             <table>
@@ -94,7 +94,8 @@
                     <th>Cognome</th>
                     <th>Sesso</th>
                     <th>Email</th>
-                    <th></th>
+                    <th>Elimina</th>
+                    <th>Modifica</th>
                 </tr>
                 @for(utente of listaUtenti; track $index)
                 {
@@ -108,6 +109,9 @@
                     <td>{{utente.email}}</td>
                     <td><span class="material-symbols-outlined" id="deleteUser"
                             (click)="eliminaUtente(utente._id)">delete</span></td>
+                    <td>
+                        <span class="material-symbols-outlined" id="editUser" (click)="editUtente()">edit</span>
+                    </td>
                 </tr>
                 }
                 }
@@ -120,7 +124,7 @@
         [class.chiudiDivAggiungiUtente]="animazioni.chiudi.listaPerizie">
 
         <div id="divIntermedio">
-            <span class="material-symbols-outlined" id="closeDivAggiungiUtente" (click)="ChiudiTutto()">
+            <span class="material-symbols-outlined" id="xClose" (click)="ChiudiTutto()">
                 close
             </span>
             <table>
@@ -130,7 +134,7 @@
                     <th>Cognome</th>
                     <th>Data</th>
                     <th>Ora</th>
-                    <th>Coordinate</th>
+                    <th>Indirizzo</th>
                     <th>Descrizione</th>
                     <th></th>
                 </tr>
@@ -148,7 +152,7 @@
                     }
                     <td>{{stampaDataOra(perizia.dataOra)[0]}}</td>
                     <td>{{stampaDataOra(perizia.dataOra)[1]}}</td>
-                    <td>{{perizia.coordinate}}</td>
+                    <td>{{indirizzoPerizia(perizia.lat, perizia.lng)}}</td>
                     <td>{{perizia.descrizione}}</td>
                     <td><span class="material-symbols-outlined" id="deleteUser">photo_camera</span></td>
                 </tr>
@@ -156,6 +160,70 @@
             </table>
         </div>
 
+    </div>
+
+    <div id="divCercaUtente" [class.apriDivAggiungiUtente]="animazioni.apri.cercaUtente"
+        [class.chiudiDivAggiungiUtente]="animazioni.chiudi.cercaUtente">
+        <div id="divIntermedio">
+            <span class="material-symbols-outlined" id="xClose" (click)="ChiudiTutto()">
+                close
+            </span>
+            <span id="spanHeader">
+                <input type="search" placeholder="Inserisci il nome utente..." [(ngModel)]="userRicerca">
+                <button id="btnCercaUtente" (click)="cercaUtente()">Cerca</button>
+                @if(!tableNascosta){
+                <button id="btnPulisci" (click)="pulisciRicerca()">Pulisci ricerca</button>
+                }
+
+            </span>
+            <table class="tableNascosta">
+                <tr>
+                    <th>Nome utente</th>
+                    <th>Nome</th>
+                    <th>Cognome</th>
+                    <th>Sesso</th>
+                    <th>Email</th>
+                    <th>Elimina</th>
+                    <th>Modifica</th>
+                </tr>
+                @if(!tableNascosta){
+                <tr>
+                    <td>{{utenteCercato.username}}</td>
+                    <td>{{utenteCercato.nome}}</td>
+                    <td>{{utenteCercato.cognome}}</td>
+                    <td>{{utenteCercato.sesso}}</td>
+                    <td>{{utenteCercato.email}}</td>
+                    <td><span class="material-symbols-outlined" id="deleteUser"
+                            (click)="eliminaUtente(utenteCercato._id)">delete</span></td>
+                    <td>
+                        <span class="material-symbols-outlined" id="editUser" (click)="editUtente()">edit</span>
+                    </td>
+                </tr>
+                }
+            </table>
+            @if(!nascondiPerizie){
+                <h1 id="perizieh1">Perizie</h1>
+            <table>
+                <tr>
+                    <th>Data</th>
+                    <th>Ora</th>
+                    <th>Indirizzo</th>
+                    <th>Descrizione</th>
+                    <th></th>
+                </tr>
+                @for(perizia of perizieUtenteCercato; track $index)
+                {
+                <tr>
+                    <td>{{stampaDataOra(perizia.dataOra)[0]}}</td>
+                    <td>{{stampaDataOra(perizia.dataOra)[1]}}</td>
+                    <td>{{indirizzoPerizia(perizia.lat, perizia.lng)}}</td>
+                    <td>{{perizia.descrizione}}</td>
+                    <td><span class="material-symbols-outlined" id="deleteUser">photo_camera</span></td>
+                </tr>
+                }
+            </table>
+            }
+        </div>
     </div>
 
 
