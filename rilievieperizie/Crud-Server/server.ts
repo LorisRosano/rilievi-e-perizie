@@ -4,6 +4,7 @@ import _fs from "fs";
 import _express from "express";
 import _dotenv from "dotenv";
 import _cors from "cors";
+import cloudinary from "cloudinary";
 
 // Lettura delle password e parametri fondamentali
 _dotenv.config({ "path": ".env" });
@@ -12,6 +13,13 @@ _dotenv.config({ "path": ".env" });
 import { MongoClient, ObjectId } from "mongodb";
 const DBNAME = process.env.DBNAME;
 const connectionString: string = process.env.connectionStringAtlas;
+
+cloudinary.v2.config({
+    cloudName: process.env.CLOUD_NAME,
+    API_KEY: process.env.API_KEY,
+    API_SECRET: process.env.API_SECRET,
+    CLOUDINARY_URL: process.env.CLOUDINARY_URL
+});
 const app = _express();
 
 // Creazione ed avvio del server
@@ -35,6 +43,10 @@ function init() {
         }
     });
 }
+
+
+
+
 
 //********************************************************************************************//
 // Routes middleware
@@ -86,13 +98,13 @@ app.get("/api/login", async (req, res, next) => {
     const client = new MongoClient(connectionString);
     await client.connect();
     let collection = client.db(DBNAME).collection("utenti");
-    let rq = collection.findOne({ "username": username, "password": password});
+    let rq = collection.findOne({ "username": username, "password": password });
     rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
     rq.finally(() => client.close());
 });
 
-app.post("/api/nuovoUtente", async function(req, res, next){
+app.post("/api/nuovoUtente", async function (req, res, next) {
     let username = req["body"]["username"];
     let password = req["body"]["password"];
     let email = req["body"]["email"];
@@ -105,19 +117,19 @@ app.post("/api/nuovoUtente", async function(req, res, next){
     const client = new MongoClient(connectionString);
     await client.connect();
     let collection = client.db(DBNAME).collection("utenti");
-    let rq = collection.insertOne({ "username": username, "password": password, "email": email, "cognome": cognome, "nome": nome, "sesso": sesso, "id": id});
+    let rq = collection.insertOne({ "username": username, "password": password, "email": email, "cognome": cognome, "nome": nome, "sesso": sesso, "id": id });
     rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
     rq.finally(() => client.close());
 });
 
-app.post("/api/primoLogin", async function(req, res, next){
+app.post("/api/primoLogin", async function (req, res, next) {
     let username = req["body"]["username"];
     let password = req["body"]["password"];
     const client = new MongoClient(connectionString);
     await client.connect();
     let collection = client.db(DBNAME).collection("utenti");
-    let rq = collection.updateOne({ "username": username}, { $set: { "password": password}});
+    let rq = collection.updateOne({ "username": username }, { $set: { "password": password } });
     rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
     rq.finally(() => client.close());
@@ -138,7 +150,7 @@ app.delete("/api/eliminaUtente", async (req, res, next) => {
     const client = new MongoClient(connectionString);
     await client.connect();
     let collection = client.db(DBNAME).collection("utenti");
-    let rq = collection.deleteOne({ "_id": new ObjectId(idUtente)});
+    let rq = collection.deleteOne({ "_id": new ObjectId(idUtente) });
     rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
     rq.finally(() => client.close());
@@ -149,7 +161,7 @@ app.get("/api/getUtentiByID", async (req, res, next) => {
     const client = new MongoClient(connectionString);
     await client.connect();
     let collection = client.db(DBNAME).collection("utenti");
-    let rq = collection.findOne({ "id": idUtente});
+    let rq = collection.findOne({ "id": idUtente });
     rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
     rq.finally(() => client.close());
@@ -180,7 +192,7 @@ app.get("/api/cercaUtente", async (req, res, next) => {
     const client = new MongoClient(connectionString);
     await client.connect();
     let collection = client.db(DBNAME).collection("utenti");
-    let rq = collection.findOne({ "username": username});
+    let rq = collection.findOne({ "username": username });
     rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
     rq.finally(() => client.close());
@@ -191,7 +203,7 @@ app.get("/api/perizieById", async (req, res, next) => {
     const client = new MongoClient(connectionString);
     await client.connect();
     let collection = client.db(DBNAME).collection("perizie");
-    let rq = collection.find({ "codiceOperatore": idUtente}).toArray();
+    let rq = collection.find({ "codiceOperatore": idUtente }).toArray();
     rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
     rq.finally(() => client.close());

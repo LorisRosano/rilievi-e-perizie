@@ -5,6 +5,7 @@
   "main": "server.js",
   "dependencies": {
     "@types/node": "^20.11.0",
+    "cloudinary": "^2.1.0",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
