@@ -76,6 +76,8 @@ export class AdminComponent {
   btnAggiungiPerizia:boolean = false;
   visualizzaDivInfoPerizia:boolean = false;
 
+  titoloPerizia:any;
+
   ngOnInit(){
     this.caricaPerizie();
     this.caricaUtenti();
@@ -94,7 +96,7 @@ export class AdminComponent {
 
   aggiornaMarker(){
     this.listaPerizie.forEach((perizia: any) => {
-      this.createMarker(perizia.lat, perizia.lng);
+      this.createMarker(perizia.lat, perizia.lng, perizia.Title);
       this.idPeriziaCorrente++;
     })
     this.idPeriziaCorrente++;
@@ -293,9 +295,11 @@ export class AdminComponent {
     let lat = event.latLng!.toJSON().lat - 0.00059;
     let lng = event.latLng!.toJSON().lng + 0.00025;
 
-    this.createMarker(lat, lng);
-    
     this.aggiungiInfoPerizia();
+
+    this.createMarker(lat, lng, this.titoloPerizia);
+    
+    
     
     
   }
@@ -308,7 +312,7 @@ export class AdminComponent {
     this.visualizzaDivInfoPerizia = false;
   }
 
-  createMarker(lat:any, lng:any){
+  createMarker(lat:any, lng:any, title:any){
     console.log(lat, lng);
     
     this.markers.push({
@@ -316,7 +320,7 @@ export class AdminComponent {
         lat: parseFloat(lat),
         lng: parseFloat(lng)
       },
-      title: this.markerTitle
+      title: title
     });
 
   }  
