@@ -618,3 +618,29 @@ google-map{
   cursor: pointer;
 }
 
+#txtIdOperatore{
+  width: 5vw;
+  text-align: center;
+}
+
+#txtTitoloPerizia{
+  width: 10vw;
+  text-align: center;
+
+}
+
+#datetimepicker{
+  width: 10vw;
+}
+
+#txtFile{
+  display: none;
+}
+
+.fileUpload{
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+

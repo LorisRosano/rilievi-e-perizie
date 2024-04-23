@@ -35,13 +35,22 @@
                 <span class="material-symbols-outlined" id="xClose" (click)="chiudiDivInfoPerizia()">
                     close
                 </span>
+                <h1>Aggiungi Info Perizia</h1>
+                <label for="datetimepicker">Titolo</label>
+                <input type="text" name="" id="txtTitoloPerizia" [(ngModel)]="titoloPerizia">
                 <label for="datetimepicker">Data e Ora</label>
-                <input type="datetime-local" id="datetimepicker" name="datetimepicker">
+                <input type="datetime-local" id="datetimepicker" name="datetimepicker" [(ngModel)]="dataOraPerizia">
 
                 <label for="descPerizia">Descrizione</label>
-                <textarea id="descPerizia" name="descPerizia" rows="4" cols="50"></textarea>
+                <textarea id="descPerizia" name="descPerizia" rows="4" cols="50" [(ngModel)]="descPerizia"></textarea>      
 
-                <button>Aggiungi perizia</button>
+                <label for="txtIdOperatore">Id Operatore</label>
+                <input type="text" id="txtIdOperatore" name="txtIdOperatore" [(ngModel)]="idOperatorePerizia">
+
+                <label for="txtFile" class="fileUpload">Aggiungi Immagini</label>
+                <input type="file" id="txtFile">
+
+                <button id="btnAggiungiPerizia" (click)="inviaInfo()">Aggiungi perizia</button>
             </div>
         </span>
     </div>

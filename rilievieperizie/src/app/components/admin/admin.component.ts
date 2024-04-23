@@ -60,6 +60,9 @@ export class AdminComponent {
   listaPerizie: any;
 
   idPeriziaCorrente:number = 0;
+  latPeriziaCorrente:any;
+  lngPeriziaCorrente:any;
+  dataOraPerizia:any;
 
   ausUtente:any;
 
@@ -77,6 +80,8 @@ export class AdminComponent {
   visualizzaDivInfoPerizia:boolean = false;
 
   titoloPerizia:any;
+  idOperatorePerizia:any;
+  descPerizia:any;
 
   ngOnInit(){
     this.caricaPerizie();
@@ -295,17 +300,38 @@ export class AdminComponent {
     let lat = event.latLng!.toJSON().lat - 0.00059;
     let lng = event.latLng!.toJSON().lng + 0.00025;
 
-    this.aggiungiInfoPerizia();
+    this.lngPeriziaCorrente = lng;
+    this.latPeriziaCorrente = lat;
 
-    this.createMarker(lat, lng, this.titoloPerizia);
-    
-    
-    
-    
+    this.aggiungiInfoPerizia();
   }
 
   aggiungiInfoPerizia(){
     this.visualizzaDivInfoPerizia = true;
+  }
+
+  inviaInfo(){
+    this.createMarker(this.lngPeriziaCorrente, this.latPeriziaCorrente, this.titoloPerizia);
+    
+    let nuovaPerizia = {
+      idPerizia: this.idPeriziaCorrente,
+      lat: this.latPeriziaCorrente,
+      lng: this.lngPeriziaCorrente,
+      titolo: this.titoloPerizia,
+      idOperatore: this.idOperatorePerizia,
+      desc: this.descPerizia
+    }
+
+    console.log(this.dataOraPerizia)
+
+    this.visualizzaDivInfoPerizia = false;
+
+    // let rq = this.server.inviaRichiesta("post", "/aggiungiPerizia", {idPerizia: this.idPeriziaCorrente, lat: this.latPeriziaCorrente, lng: this.lngPeriziaCorrente, titolo: this.titoloPerizia, idOperatore: this.idOperatorePerizia, desc: this.descPerizia});
+    // rq!.then((data: any) => {
+    //   console.log(data);
+    // }).catch((error: any) => {
+    //   console.log(error);
+    // });
   }
 
   chiudiDivInfoPerizia(){
