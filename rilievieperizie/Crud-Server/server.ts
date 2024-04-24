@@ -246,22 +246,22 @@ app.post("/api/addBase64CloudinaryImage", (req, res, next) => {
         });
 });
 
-app.post('/upload-image', (req, res) => {
-    // const file = req.files.file;
+// app.post('/upload-image', (req, res) => {
+//     const file = req.files.file;
   
-    // Carica l'immagine su Cloudinary
-    // cloudinary.uploader.upload(file.tempFilePath, (error, result) => {
-    //   if (error) {
-    //     console.error('Errore durante il caricamento su Cloudinary:', error);
-    //     res.status(500).json({ error: 'Errore durante il caricamento su Cloudinary' });
-    //   } else {
-    //     // Ottieni l'URL pubblico dell'immagine caricata da Cloudinary
-    //     const imageUrl = result.secure_url;
-    //     // Invia l'URL dell'immagine al client Angular
-    //     res.json({ imageUrl });
-    //   }
-    // });
-  });
+//     // Carica l'immagine su Cloudinary
+//     cloudinary.uploader.upload(file.tempFilePath, (error, result) => {
+//       if (error) {
+//         console.error('Errore durante il caricamento su Cloudinary:', error);
+//         res.status(500).json({ error: 'Errore durante il caricamento su Cloudinary' });
+//       } else {
+//         // Ottieni l'URL pubblico dell'immagine caricata da Cloudinary
+//         const imageUrl = result.secure_url;
+//         // Invia l'URL dell'immagine al client Angular
+//         res.json({ imageUrl });
+//       }
+//     });
+//   });
 
 //********************************************************************************************//
 // Default route e gestione degli errori
