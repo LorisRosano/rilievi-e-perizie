@@ -28,4 +28,13 @@ export class ServerService {
         return undefined;
     }
   }
+
+  public uploadImage(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'your_upload_preset'); // Imposta il tuo upload preset
+
+    // Invia l'immagine al tuo server per caricarla su Cloudinary
+    return this.inviaRichiesta("post", '/upload-image', formData);
+  }
 }

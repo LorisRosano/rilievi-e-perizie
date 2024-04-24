@@ -4,7 +4,7 @@ import _fs from "fs";
 import _express from "express";
 import _dotenv from "dotenv";
 import _cors from "cors";
-import cloudinary from "cloudinary";
+import cloudinary, { UploadApiResponse } from "cloudinary";
 
 // Lettura delle password e parametri fondamentali
 _dotenv.config({ "path": ".env" });
@@ -227,6 +227,42 @@ app.post("/api/aggiungiPerizia", async (req, res, next) => {
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
     rq.finally(() => client.close());
 });
+
+app.post("/api/addBase64CloudinaryImage", (req, res, next) => {
+    let username = req["body"].username;
+    let imgBase64 = req["body"].imgBase64;
+    cloudinary.v2.uploader.upload(imgBase64, { "folder": "Es_03_Upload" })
+        .catch((err) => {
+            res.status(500).send(`Error while uploading file on Cloudinary: ${err}`);
+        })
+        .then(async function (response: UploadApiResponse) {
+            const client = new MongoClient(connectionString);
+            await client.connect();
+            let collection = client.db(DBNAME).collection("images");
+            let rq = collection.insertOne({ username, "img": response.secure_url });
+            rq.then((data) => res.send(data));
+            rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
+            rq.finally(() => client.close());
+        });
+});
+
+app.post('/upload-image', (req, res) => {
+    // const file = req.files.file;
+  
+    // Carica l'immagine su Cloudinary
+    // cloudinary.uploader.upload(file.tempFilePath, (error, result) => {
+    //   if (error) {
+    //     console.error('Errore durante il caricamento su Cloudinary:', error);
+    //     res.status(500).json({ error: 'Errore durante il caricamento su Cloudinary' });
+    //   } else {
+    //     // Ottieni l'URL pubblico dell'immagine caricata da Cloudinary
+    //     const imageUrl = result.secure_url;
+    //     // Invia l'URL dell'immagine al client Angular
+    //     res.json({ imageUrl });
+    //   }
+    // });
+  });
+
 //********************************************************************************************//
 // Default route e gestione degli errori
 //********************************************************************************************//

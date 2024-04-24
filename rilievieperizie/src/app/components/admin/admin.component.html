@@ -48,7 +48,7 @@
                 <input type="text" id="txtIdOperatore" name="txtIdOperatore" [(ngModel)]="idOperatorePerizia">
 
                 <label for="txtFile" class="fileUpload">Aggiungi Immagini</label>
-                <input type="file" id="txtFile">
+                <input type="file" id="txtFile" [(ngModel)]="txtFile" (change)="aggiungiImmaginiCloudinary($event)">
 
                 <button id="btnAggiungiPerizia" (click)="inviaInfo()">Aggiungi perizia</button>
             </div>

@@ -63,6 +63,7 @@ export class AdminComponent {
   latPeriziaCorrente:any;
   lngPeriziaCorrente:any;
   dataOraPerizia:any;
+  txtFile:any;
 
   ausUtente:any;
 
@@ -328,12 +329,34 @@ export class AdminComponent {
 
     this.visualizzaDivInfoPerizia = false;
 
+
     let rq = this.server.inviaRichiesta("post", "/aggiungiPerizia", {perizia: nuovaPerizia});
     rq!.then((data: any) => {
       console.log(data);
     }).catch((error: any) => {
       console.log(error);
     });
+  }
+
+  async aggiungiImmaginiCloudinary(event:any){
+    const selectedFile: File = event.target.files[0];
+    
+    this.uploadImageOnCloudinary(selectedFile);
+		
+  }
+
+  uploadImageOnCloudinary(file: File){
+    // Configura i parametri del caricamento su Cloudinary
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'your_upload_preset'); // Imposta il tuo upload preset
+
+    // Effettua la richiesta di caricamento a Cloudinary
+    // this.server.uploadImage(file).subscribe((imageUrl: string) => {
+    //   // Ricevi l'URL dell'immagine dal server e inseriscilo nel database MongoDB
+    //   console.log('URL dell\'immagine su Cloudinary:', imageUrl);
+    //   // Ora puoi eseguire l'operazione per salvare l'URL nel database MongoDB qui
+    // });
   }
 
   chiudiDivInfoPerizia(){
