@@ -112,8 +112,6 @@ app.post("/api/nuovoUtente", async function (req, res, next) {
     let nome = req["body"]["nome"];
     let sesso = req["body"]["sesso"];
     let id = req["body"]["idUtente"];
-    console.log(id)
-    console.log(username, password, email)
     const client = new MongoClient(connectionString);
     await client.connect();
     let collection = client.db(DBNAME).collection("utenti");
@@ -210,13 +208,17 @@ app.get("/api/perizieById", async (req, res, next) => {
 });
 
 app.post("/api/aggiungiPerizia", async (req, res, next) => {
-    let idPerizia = req["body"]["idPerizia"];
-    let codiceOperatore = req["body"]["codiceOperatore"];
-    let dataPerizia = req["body"]["dataPerizia"];
-    let descrizione = req["body"]["descrizione"];
-    let lat = req["body"]["lat"];
-    let lng = req["body"]["lng"];
-    let title = req["body"]["title"];
+    let perizia = req["body"]["perizia"];
+    let idPerizia = perizia.idPerizia;
+    let codiceOperatore = perizia.idOperatore;
+    let dataPerizia = perizia.dataOra;
+    let descrizione = perizia.desc;
+    let lat = perizia.lat;
+    let lng = perizia.lng;
+    let title = perizia.titolo;
+
+    console.log(dataPerizia)
+    
     const client = new MongoClient(connectionString);
     await client.connect();
     let collection = client.db(DBNAME).collection("perizie");

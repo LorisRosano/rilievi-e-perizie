@@ -314,24 +314,26 @@ export class AdminComponent {
     this.createMarker(this.lngPeriziaCorrente, this.latPeriziaCorrente, this.titoloPerizia);
     
     let nuovaPerizia = {
-      idPerizia: this.idPeriziaCorrente,
-      lat: this.latPeriziaCorrente,
-      lng: this.lngPeriziaCorrente,
+      idPerizia: this.idPeriziaCorrente.toString(),
+      lat: this.latPeriziaCorrente.toString(),
+      lng: this.lngPeriziaCorrente.toString(),
       titolo: this.titoloPerizia,
       idOperatore: this.idOperatorePerizia,
-      desc: this.descPerizia
+      desc: this.descPerizia,
+      dataOra: this.dataOraPerizia.toString()
     }
 
-    console.log(this.dataOraPerizia)
+    console.log(nuovaPerizia)
+    console.log(this.listaPerizie)
 
     this.visualizzaDivInfoPerizia = false;
 
-    // let rq = this.server.inviaRichiesta("post", "/aggiungiPerizia", {idPerizia: this.idPeriziaCorrente, lat: this.latPeriziaCorrente, lng: this.lngPeriziaCorrente, titolo: this.titoloPerizia, idOperatore: this.idOperatorePerizia, desc: this.descPerizia});
-    // rq!.then((data: any) => {
-    //   console.log(data);
-    // }).catch((error: any) => {
-    //   console.log(error);
-    // });
+    let rq = this.server.inviaRichiesta("post", "/aggiungiPerizia", {perizia: nuovaPerizia});
+    rq!.then((data: any) => {
+      console.log(data);
+    }).catch((error: any) => {
+      console.log(error);
+    });
   }
 
   chiudiDivInfoPerizia(){
@@ -348,6 +350,8 @@ export class AdminComponent {
       },
       title: title
     });
+
+    console.log(this.markers);
 
   }  
 }

@@ -155,7 +155,7 @@
 }
 
 form {
-  padding-block: 10vh;
+  /* padding-block: 10vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
