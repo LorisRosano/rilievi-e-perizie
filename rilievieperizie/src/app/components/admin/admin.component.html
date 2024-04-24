@@ -146,6 +146,7 @@
                     <th>Indirizzo</th>
                     <th>Descrizione</th>
                     <th></th>
+                    <th></th>
                 </tr>
                 @for(perizia of listaPerizie; track $index)
                 {
@@ -164,6 +165,7 @@
                     <td>{{indirizzoPerizia(perizia.lat, perizia.lng)}}</td>
                     <td>{{perizia.descrizione}}</td>
                     <td><span class="material-symbols-outlined" id="deleteUser">photo_camera</span></td>
+                    <td><span class="material-symbols-outlined" id="deleteUser" (click)="eliminaPerizia(perizia._id)">delete</span></td>
                 </tr>
                 }
             </table>

@@ -202,6 +202,30 @@ export class AdminComponent {
     });
   }
 
+  eliminaPerizia(idPerizia: any) {
+    let titoloCorrente = this.getTitoloPeriziaByID(idPerizia);
+    console.log(titoloCorrente);
+    let rq = this.server.inviaRichiesta("delete", "/eliminaPerizia", { idPerizia: idPerizia });
+    rq!.then((data: any) => {
+      console.log(data);
+    }).catch((error: any) => {
+      console.log(error);
+    });
+    this.listaPerizie = this.listaPerizie.filter((perizia: any) => {
+      return perizia._id != idPerizia;
+    });
+    this.markers = this.markers.filter((marker: any) => {
+      return marker.title != titoloCorrente;
+    });
+  }
+
+  getTitoloPeriziaByID(idPerizia: any) {
+    let perizia = this.listaPerizie.filter((perizia: any) => {
+      return perizia._id != idPerizia;
+    });
+    return perizia[0].Title;
+  }
+
   async aggiungiUtente() {
     let idNuovoUtente: any = await this.getNuovoID();
     console.log("nuovo id" + idNuovoUtente)
@@ -328,6 +352,7 @@ export class AdminComponent {
     console.log(this.listaPerizie)
 
     this.visualizzaDivInfoPerizia = false;
+    this.btnAggiungiPerizia = false;
 
 
     let rq = this.server.inviaRichiesta("post", "/aggiungiPerizia", {perizia: nuovaPerizia});

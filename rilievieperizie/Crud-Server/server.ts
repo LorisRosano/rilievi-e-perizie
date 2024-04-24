@@ -154,6 +154,17 @@ app.delete("/api/eliminaUtente", async (req, res, next) => {
     rq.finally(() => client.close());
 });
 
+app.delete("/api/eliminaPerizia", async (req, res, next) => {
+    let idPerizia = req["body"]["idPerizia"];
+    const client = new MongoClient(connectionString);
+    await client.connect();
+    let collection = client.db(DBNAME).collection("perizie");
+    let rq = collection.deleteOne({ "_id": new ObjectId(idPerizia) });
+    rq.then((data) => res.send(data));
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
+    rq.finally(() => client.close());
+});
+
 app.get("/api/getUtentiByID", async (req, res, next) => {
     let idUtente = req["query"]["idUtente"];
     const client = new MongoClient(connectionString);
