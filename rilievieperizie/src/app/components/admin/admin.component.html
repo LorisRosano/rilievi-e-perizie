@@ -1,6 +1,6 @@
 <div id="mainDiv">
     <div id="divMappa" [class.cambiaCursor]="btnAggiungiPerizia">
-        <google-map id="mappa" height="400px" width="72vw" height="90vh" [center]="center" [zoom]="zoom"
+        <google-map #map id="mappa" height="400px" width="72vw" height="90vh" [center]="center" [zoom]="zoom"
             (mapClick)="btnAggiungiPerizia && aggiungiPerizia($event)">
             <map-polyline [path]="vertices"></map-polyline>
 
@@ -22,6 +22,7 @@
                 <span class="material-symbols-outlined" id="xClose" (click)="chiudiDivInfoMarker()">
                     close
                 </span>
+
             </div>
         </span>
     </div>

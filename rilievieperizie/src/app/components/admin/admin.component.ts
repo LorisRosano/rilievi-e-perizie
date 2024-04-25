@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { RouterModule } from '@angular/router';
-import { GoogleMapsModule } from '@angular/google-maps';
+import { GoogleMap, GoogleMapsModule } from '@angular/google-maps';
 import { ServerService } from '../../servizi/server.service';
 import { FormsModule } from '@angular/forms';
 import MapMouseEvent = google.maps.MapMouseEvent;
@@ -38,6 +38,8 @@ export class AdminComponent {
     "lng": 7.7360397
   }
 
+  @ViewChild(GoogleMap) map!: GoogleMap;
+
   markers: any[];
   markerTitle: any;
   indirizzo: any;
@@ -50,46 +52,46 @@ export class AdminComponent {
   passwordGenerica: any = "password";
 
   userRicerca: string = "";
-  utenteCercato:any;
-  perizieUtenteCercato:any;
+  utenteCercato: any;
+  perizieUtenteCercato: any;
 
-  tableNascosta:boolean = true;
-  nascondiPerizie:boolean = true;
+  tableNascosta: boolean = true;
+  nascondiPerizie: boolean = true;
 
   listaUtenti: any;
   listaPerizie: any;
 
-  idPeriziaCorrente:number = 0;
-  latPeriziaCorrente:any;
-  lngPeriziaCorrente:any;
-  dataOraPerizia:any;
-  txtFile:any;
+  idPeriziaCorrente: number = 0;
+  latPeriziaCorrente: any;
+  lngPeriziaCorrente: any;
+  dataOraPerizia: any;
+  txtFile: any;
 
-  ausUtente:any;
+  ausUtente: any;
 
   lblAggiungiUtente: string = "";
   coloreUtenteAggiunto: boolean = false;
   coloreUtenteNONAggiunto: boolean = false;
 
-  divAggiungiPerizia:boolean = false;
+  divAggiungiPerizia: boolean = false;
 
-  visualizzaDivInfoMarker:boolean = false;
-  chiudiInfoMarker:boolean = false;
-  togliOpacity:boolean = false;
+  visualizzaDivInfoMarker: boolean = false;
+  chiudiInfoMarker: boolean = false;
+  togliOpacity: boolean = false;
 
-  btnAggiungiPerizia:boolean = false;
-  visualizzaDivInfoPerizia:boolean = false;
+  btnAggiungiPerizia: boolean = false;
+  visualizzaDivInfoPerizia: boolean = false;
 
-  titoloPerizia:any;
-  idOperatorePerizia:any;
-  descPerizia:any;
+  titoloPerizia: any;
+  idOperatorePerizia: any;
+  descPerizia: any;
 
-  ngOnInit(){
+  ngOnInit() {
     this.caricaPerizie();
     this.caricaUtenti();
   }
 
-  caricaPerizie(){
+  caricaPerizie() {
     let rq = this.server.inviaRichiesta("get", "/listaPerizie");
     rq!.then((data: any) => {
       this.listaPerizie = data;
@@ -99,14 +101,14 @@ export class AdminComponent {
     });
   }
 
-  aggiornaMarker(){
+  aggiornaMarker() {
     this.markers = [];
     this.listaPerizie.forEach((perizia: any) => {
       this.createMarker(perizia.lat, perizia.lng, perizia.Title);
       this.idPeriziaCorrente++;
     })
     this.idPeriziaCorrente++;
-    
+
     this.markers.push({
       position: {
         lat: 44.5558363,
@@ -114,10 +116,10 @@ export class AdminComponent {
       },
       title: "Sede centrale"
     });
-    
+
   }
 
-  caricaUtenti(){
+  caricaUtenti() {
     let rq = this.server.inviaRichiesta("get", "/listaUtenti");
     rq!.then((data: any) => {
       this.listaUtenti = data;
@@ -150,11 +152,40 @@ export class AdminComponent {
 
   }
 
-  infoMarker(event: MapMouseEvent, marker: any) {
-    this.visualizzaDivInfoMarker = true;
+  infoMarker(event: any, marker: any) {
+    // this.visualizzaDivInfoMarker = true;
+    // console.log
+
+     
+      const destination = marker.position;
+      const directionsService = new google.maps.DirectionsService();
+      const directionsRenderer = new google.maps.DirectionsRenderer();
+      // const sideBar: HTMLElement = document.getElementById("sidebar") as HTMLElement;
+
+      // sideBar.innerHTML = '';
+
+      this.map.panTo(destination);
+      directionsRenderer.setMap(this.map.googleMap!);
+      // directionsRenderer.setPanel(sideBar);
+
+      const request: google.maps.DirectionsRequest = {
+        origin: this.sedeCentrale,
+        destination: destination,
+        travelMode: google.maps.TravelMode.DRIVING, // 
+        provideRouteAlternatives: true
+      };
+
+      directionsService.route(request, (result, status) => {
+        if (status === google.maps.DirectionsStatus.OK) {
+          directionsRenderer.setDirections(result);
+        } else {
+          console.error('Errore durante il calcolo del percorso:', status);
+        }
+      });
+    
   }
 
-  chiudiDivInfoMarker(){
+  chiudiDivInfoMarker() {
     this.visualizzaDivInfoMarker = false;
     // this.chiudiInfoMarker = true;
     // this.togliOpacity = true;
@@ -163,7 +194,7 @@ export class AdminComponent {
   Apri(nome: string) {
     const { chiudi, apri } = this.animazioni;
     const aperti = Object.keys(apri).filter((c) => apri[c as keyof typeof apri]);
-    const chiaviChiudi = Object.keys(chiudi).filter(c => c !=nome && aperti.includes(c)).filter((c) => {
+    const chiaviChiudi = Object.keys(chiudi).filter(c => c != nome && aperti.includes(c)).filter((c) => {
       return !this.animazioni["chiudi"][c as keyof typeof chiudi];
     });
 
@@ -176,23 +207,23 @@ export class AdminComponent {
     this.animazioni.apri[nome as keyof typeof chiudi] = true;
   }
 
-  ChiudiTutto(){
+  ChiudiTutto() {
     this.pulisciRicerca();
     const { apri, chiudi } = this.animazioni;
     const aperti = Object.keys(apri).filter((c) => apri[c as keyof typeof apri]);
     Object.keys(apri).forEach((c) => apri[c as keyof typeof apri] = false)
-    Object.keys(chiudi).filter((c) => aperti.includes(c)).forEach((c) => chiudi[c as keyof typeof apri] = true) 
+    Object.keys(chiudi).filter((c) => aperti.includes(c)).forEach((c) => chiudi[c as keyof typeof apri] = true)
   }
 
   apriListaUtenti() {
     this.Apri('listaUtente');
   }
 
-  apriListaPerizie(){
+  apriListaPerizie() {
     this.Apri('listaPerizie');
   }
 
-  apriCercaUtente(){
+  apriCercaUtente() {
     this.Apri('cercaUtente');
   }
 
@@ -208,7 +239,7 @@ export class AdminComponent {
     });
   }
 
-  eliminaPerizia(titolo: any, idPerizia:any) {
+  eliminaPerizia(titolo: any, idPerizia: any) {
     console.log(idPerizia);
 
     let rq = this.server.inviaRichiesta("delete", "/eliminaPerizia", { idPerizia: idPerizia });
@@ -220,7 +251,7 @@ export class AdminComponent {
     this.listaPerizie = this.listaPerizie.filter((perizia: any) => {
       return perizia._id != idPerizia;
     });
-    
+
     this.markers = this.markers.filter((marker: any) => {
       return marker.title != titolo;
     });
@@ -243,10 +274,10 @@ export class AdminComponent {
 
   }
 
-  cercaUtente(){
+  cercaUtente() {
     this.tableNascosta = false;
     this.nascondiPerizie = false;
-    let rq = this.server.inviaRichiesta("get", "/cercaUtente", {username: this.userRicerca});
+    let rq = this.server.inviaRichiesta("get", "/cercaUtente", { username: this.userRicerca });
     rq!.then((data: any) => {
       this.utenteCercato = data;
       this.filtraPerizie(this.utenteCercato.id);
@@ -255,8 +286,8 @@ export class AdminComponent {
     });
   }
 
-  filtraPerizie(idUtente:any){
-    let rq = this.server.inviaRichiesta("get", "/perizieById", {idUtente: idUtente});
+  filtraPerizie(idUtente: any) {
+    let rq = this.server.inviaRichiesta("get", "/perizieById", { idUtente: idUtente });
     rq!.then((data: any) => {
       this.perizieUtenteCercato = data;
       console.log(this.perizieUtenteCercato);
@@ -265,14 +296,14 @@ export class AdminComponent {
     });
   }
 
-  pulisciRicerca(){
+  pulisciRicerca() {
     this.tableNascosta = true;
     this.utenteCercato = "";
     this.perizieUtenteCercato = "";
     this.nascondiPerizie = true;
   }
 
-  editUtente(){
+  editUtente() {
 
   }
 
@@ -290,13 +321,13 @@ export class AdminComponent {
     });
   }
 
-  stampaDataOra(s:any){
+  stampaDataOra(s: any) {
     let [dataPerizia, ora] = s.split("T");
     ora = ora.split(":")[0] + ":" + ora.split(":")[1];
     return [dataPerizia, ora];
   }
 
-  indirizzoPerizia(lat:any, lng:any){
+  indirizzoPerizia(lat: any, lng: any) {
     // const request: google.maps.DirectionsRequest = {
     //   destination: { lat: lat, lng: lng },
     //   origin: { lat: this.sedeCentrale?.lat!, lng: this.sedeCentrale?.lng! },
@@ -317,7 +348,7 @@ export class AdminComponent {
     // );
   }
 
-  aggiungiPerizia(event: MapMouseEvent){
+  aggiungiPerizia(event: MapMouseEvent) {
 
     let lat = event.latLng!.toJSON().lat - 0.00059;
     let lng = event.latLng!.toJSON().lng + 0.00025;
@@ -330,11 +361,11 @@ export class AdminComponent {
     this.aggiungiInfoPerizia();
   }
 
-  aggiungiInfoPerizia(){
+  aggiungiInfoPerizia() {
     this.visualizzaDivInfoPerizia = true;
   }
 
-  inviaInfo(){
+  inviaInfo() {
     let nuovaPerizia = {
       codiceOperatore: this.idOperatorePerizia,
       dataOra: this.dataOraPerizia.toString(),
@@ -346,7 +377,7 @@ export class AdminComponent {
       Title: this.titoloPerizia
     }
 
-    
+
 
     console.log(nuovaPerizia)
     console.log(this.listaPerizie)
@@ -355,7 +386,7 @@ export class AdminComponent {
     this.btnAggiungiPerizia = false;
 
 
-    let rq = this.server.inviaRichiesta("post", "/aggiungiPerizia", {perizia: nuovaPerizia});
+    let rq = this.server.inviaRichiesta("post", "/aggiungiPerizia", { perizia: nuovaPerizia });
     rq!.then((data: any) => {
       this.caricaPerizie();
     }).catch((error: any) => {
@@ -365,14 +396,14 @@ export class AdminComponent {
 
   }
 
-  async aggiungiImmaginiCloudinary(event:any){
+  async aggiungiImmaginiCloudinary(event: any) {
     const selectedFile: File = event.target.files[0];
-    
+
     this.uploadImageOnCloudinary(selectedFile);
-		
+
   }
 
-  uploadImageOnCloudinary(file: File){
+  uploadImageOnCloudinary(file: File) {
     // Configura i parametri del caricamento su Cloudinary
     const formData = new FormData();
     formData.append('file', file);
@@ -386,11 +417,11 @@ export class AdminComponent {
     // });
   }
 
-  chiudiDivInfoPerizia(){
+  chiudiDivInfoPerizia() {
     this.visualizzaDivInfoPerizia = false;
   }
 
-  createMarker(lat:any, lng:any, title:any){
+  createMarker(lat: any, lng: any, title: any) {
     this.markers.push({
       position: {
         lat: parseFloat(lat),
@@ -401,5 +432,5 @@ export class AdminComponent {
 
     console.log(this.markers);
 
-  }  
+  }
 }
