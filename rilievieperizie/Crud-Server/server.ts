@@ -221,12 +221,12 @@ app.get("/api/perizieById", async (req, res, next) => {
 app.post("/api/aggiungiPerizia", async (req, res, next) => {
     let perizia = req["body"]["perizia"];
     let idPerizia = perizia.idPerizia;
-    let codiceOperatore = perizia.idOperatore;
+    let codiceOperatore = perizia.codiceOperatore;
     let dataPerizia = perizia.dataOra;
-    let descrizione = perizia.desc;
+    let descrizione = perizia.descrizione;
     let lat = perizia.lat;
     let lng = perizia.lng;
-    let title = perizia.titolo;
+    let title = perizia.Title;
 
     console.log(dataPerizia)
     

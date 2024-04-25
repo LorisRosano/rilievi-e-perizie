@@ -93,7 +93,6 @@ export class AdminComponent {
     let rq = this.server.inviaRichiesta("get", "/listaPerizie");
     rq!.then((data: any) => {
       this.listaPerizie = data;
-      console.log(this.listaPerizie);
       this.aggiornaMarker();
     }).catch((error: any) => {
       console.log(error);
@@ -101,11 +100,21 @@ export class AdminComponent {
   }
 
   aggiornaMarker(){
+    this.markers = [];
     this.listaPerizie.forEach((perizia: any) => {
       this.createMarker(perizia.lat, perizia.lng, perizia.Title);
       this.idPeriziaCorrente++;
     })
     this.idPeriziaCorrente++;
+    
+    this.markers.push({
+      position: {
+        lat: 44.5558363,
+        lng: 7.7360397
+      },
+      title: "Sede centrale"
+    });
+    
   }
 
   caricaUtenti(){
@@ -165,16 +174,13 @@ export class AdminComponent {
     })
 
     this.animazioni.apri[nome as keyof typeof chiudi] = true;
-    console.log(1, this.animazioni);
   }
 
   ChiudiTutto(){
-    console.log(this.animazioni)
     this.pulisciRicerca();
     const { apri, chiudi } = this.animazioni;
     const aperti = Object.keys(apri).filter((c) => apri[c as keyof typeof apri]);
     Object.keys(apri).forEach((c) => apri[c as keyof typeof apri] = false)
-    console.log(aperti)
     Object.keys(chiudi).filter((c) => aperti.includes(c)).forEach((c) => chiudi[c as keyof typeof apri] = true) 
   }
 
@@ -202,9 +208,9 @@ export class AdminComponent {
     });
   }
 
-  eliminaPerizia(idPerizia: any) {
-    let titoloCorrente = this.getTitoloPeriziaByID(idPerizia);
-    console.log(titoloCorrente);
+  eliminaPerizia(titolo: any, idPerizia:any) {
+    console.log(idPerizia);
+
     let rq = this.server.inviaRichiesta("delete", "/eliminaPerizia", { idPerizia: idPerizia });
     rq!.then((data: any) => {
       console.log(data);
@@ -214,23 +220,15 @@ export class AdminComponent {
     this.listaPerizie = this.listaPerizie.filter((perizia: any) => {
       return perizia._id != idPerizia;
     });
+    
     this.markers = this.markers.filter((marker: any) => {
-      return marker.title != titoloCorrente;
+      return marker.title != titolo;
     });
-  }
-
-  getTitoloPeriziaByID(idPerizia: any) {
-    let perizia = this.listaPerizie.filter((perizia: any) => {
-      return perizia._id != idPerizia;
-    });
-    return perizia[0].Title;
   }
 
   async aggiungiUtente() {
     let idNuovoUtente: any = await this.getNuovoID();
-    console.log("nuovo id" + idNuovoUtente)
     let rq: any = this.server.inviaRichiesta("post", "/nuovoUtente", { username: this.username, password: this.passwordGenerica, email: this.email, cognome: this.cognome, nome: this.nome, sesso: this.sesso, idUtente: idNuovoUtente });
-    console.log(this.username, this.passwordGenerica, this.email);
     rq.then((data: any) => {
       console.log(data);
       this.lblAggiungiUtente = "Utente aggiunto con successo";
@@ -283,7 +281,6 @@ export class AdminComponent {
       let id: any;
       let aus: any = this.server.inviaRichiesta("get", "/getUtenti");
       aus.then((data: any) => {
-        console.log("Data lenght" + data.length)
         id = data.length;
         resolve(id);
       }).catch((error: any) => {
@@ -325,8 +322,10 @@ export class AdminComponent {
     let lat = event.latLng!.toJSON().lat - 0.00059;
     let lng = event.latLng!.toJSON().lng + 0.00025;
 
-    this.lngPeriziaCorrente = lng;
+    this.createMarker(lat, lng, this.titoloPerizia);
+
     this.latPeriziaCorrente = lat;
+    this.lngPeriziaCorrente = lng;
 
     this.aggiungiInfoPerizia();
   }
@@ -336,17 +335,18 @@ export class AdminComponent {
   }
 
   inviaInfo(){
-    this.createMarker(this.lngPeriziaCorrente, this.latPeriziaCorrente, this.titoloPerizia);
-    
     let nuovaPerizia = {
+      codiceOperatore: this.idOperatorePerizia,
+      dataOra: this.dataOraPerizia.toString(),
+      descrizione: this.descPerizia,
+      images: [],
       idPerizia: this.idPeriziaCorrente.toString(),
       lat: this.latPeriziaCorrente.toString(),
       lng: this.lngPeriziaCorrente.toString(),
-      titolo: this.titoloPerizia,
-      idOperatore: this.idOperatorePerizia,
-      desc: this.descPerizia,
-      dataOra: this.dataOraPerizia.toString()
+      Title: this.titoloPerizia
     }
+
+    
 
     console.log(nuovaPerizia)
     console.log(this.listaPerizie)
@@ -357,10 +357,12 @@ export class AdminComponent {
 
     let rq = this.server.inviaRichiesta("post", "/aggiungiPerizia", {perizia: nuovaPerizia});
     rq!.then((data: any) => {
-      console.log(data);
+      this.caricaPerizie();
     }).catch((error: any) => {
       console.log(error);
     });
+
+
   }
 
   async aggiungiImmaginiCloudinary(event:any){
@@ -389,8 +391,6 @@ export class AdminComponent {
   }
 
   createMarker(lat:any, lng:any, title:any){
-    console.log(lat, lng);
-    
     this.markers.push({
       position: {
         lat: parseFloat(lat),
