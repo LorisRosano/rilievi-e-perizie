@@ -5,6 +5,7 @@ import _express from "express";
 import _dotenv from "dotenv";
 import _cors from "cors";
 import cloudinary, { UploadApiResponse } from "cloudinary";
+import _jwt from "jsonwebtoken";
 
 // Lettura delle password e parametri fondamentali
 _dotenv.config({ "path": ".env" });
@@ -98,10 +99,34 @@ app.get("/api/login", async (req, res, next) => {
     await client.connect();
     let collection = client.db(DBNAME).collection("utenti");
     let rq = collection.findOne({ "username": username, "password": password });
-    rq.then((data) => res.send(data));
+    rq.then((data) => {
+        // if (data) {
+        //     let token = createToken(data);
+        //     console.log(token);
+        //     res.setHeader("authorization", token);
+        //     // Fa si che la header authorization venga restituita al client
+        //     res.setHeader("access-control-expose-headers", "authorization");
+        //     res.send({ "ris": "ok" });
+            
+        // }
+        res.send(data); 
+    });
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
     rq.finally(() => client.close());
 });
+
+// function createToken(data) {
+//     let currentTimeSeconds = Math.floor(new Date().getTime() / 1000);
+//     let payload = {
+//         "_id": data._id,
+//         "username": data.username,
+//         // Se c'è iat mette iat altrimenti mette currentTimeSeconds
+//         "iat": data.iat || currentTimeSeconds,
+//         "exp": currentTimeSeconds + parseInt(process.env.durata_token)
+//     }
+//     let token = _jwt.sign(payload, "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTcxNDE0ODQxMywiaWF0IjoxNzE0MTQ4NDEzfQ.Us6C4waBeTRaoMPcU8cMarfmb2s488ifYo5rhhM6I1A");
+//     return token;
+// }
 
 app.post("/api/nuovoUtente", async function (req, res, next) {
     let username = req["body"]["username"];
@@ -229,7 +254,7 @@ app.post("/api/aggiungiPerizia", async (req, res, next) => {
     let title = perizia.Title;
 
     console.log(dataPerizia)
-    
+
     const client = new MongoClient(connectionString);
     await client.connect();
     let collection = client.db(DBNAME).collection("perizie");
@@ -242,7 +267,7 @@ app.post("/api/aggiungiPerizia", async (req, res, next) => {
 app.post("/api/addBase64CloudinaryImage", (req, res, next) => {
     let codiceOperatore = req["body"].codiceOperatore;
     let imgBase64 = req["body"].imgBase64;
-    
+
     cloudinary.v2.uploader.upload(imgBase64, { "folder": "imgPerizie" })
         .catch((err) => {
             res.status(500).send(`Error while uploading file on Cloudinary: ${err}`);
@@ -252,7 +277,7 @@ app.post("/api/addBase64CloudinaryImage", (req, res, next) => {
             await client.connect();
             let collection = client.db(DBNAME).collection("perizie");
             let rq = collection.find().toArray();
-            rq.then((data) => res.send({"url": response.secure_url}));
+            rq.then((data) => res.send({ "url": response.secure_url }));
             rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
             rq.finally(() => client.close());
         });

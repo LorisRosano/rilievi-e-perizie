@@ -475,19 +475,6 @@ export class AdminComponent {
     });
   }
 
-  uploadImageOnCloudinary(file: File) {
-    // Configura i parametri del caricamento su Cloudinary
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', 'your_upload_preset'); // Imposta il tuo upload preset
-
-    // Effettua la richiesta di caricamento a Cloudinary
-    // this.server.uploadImage(file).subscribe((imageUrl: string) => {
-    //   // Ricevi l'URL dell'immagine dal server e inseriscilo nel database MongoDB
-    //   console.log('URL dell\'immagine su Cloudinary:', imageUrl);
-    //   // Ora puoi eseguire l'operazione per salvare l'URL nel database MongoDB qui
-    // });
-  }
 
   chiudiDivInfoPerizia() {
     this.visualizzaDivInfoPerizia = false;
@@ -526,5 +513,9 @@ export class AdminComponent {
   chiudiImmaginiPerizie(){
     this.visualizzaImmaginiPerizie = false;
     this.fotoPerizaCorrente = [];
+  }
+
+  logout(){
+    this.router.navigate(["/login"]);
   }
 }

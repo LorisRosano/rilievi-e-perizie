@@ -111,7 +111,7 @@
   contain: paint;
 }
 
-#divCercaUtente{
+#divCercaUtente {
   display: flex;
   flex-direction: column;
   margin-left: auto;
@@ -129,14 +129,14 @@
   contain: paint;
 }
 
-#spanHeader{
+#spanHeader {
   display: flex;
   align-items: center;
   gap: 20px;
 
 }
 
-#btnCercaUtente{
+#btnCercaUtente {
   width: 5vw;
   height: 3rem;
   border: 1px solid #000;
@@ -235,11 +235,11 @@ td {
   color: white;
 }
 
-#xClose:hover{
+#xClose:hover {
   animation: animXClose 0.5s forwards;
 }
 
-@keyframes animXClose{
+@keyframes animXClose {
   0% {
     color: white;
   }
@@ -250,11 +250,11 @@ td {
 
 }
 
-#xClose:not(:hover){
+#xClose:not(:hover) {
   animation: animXNotClose 0.5s forwards;
 }
 
-@keyframes animXNotClose{
+@keyframes animXNotClose {
   0% {
     color: red;
   }
@@ -274,13 +274,23 @@ td {
 }
 
 @keyframes animRight {
-  from{right: -100%}
-  to{right: var(--w-menu)}
+  from {
+    right: -100%
+  }
+
+  to {
+    right: var(--w-menu)
+  }
 }
 
 @keyframes animRightClose {
-  from{right: var(--w-menu)}
-  to{right: -100%}
+  from {
+    right: var(--w-menu)
+  }
+
+  to {
+    right: -100%
+  }
 }
 
 #divListaPerizie table {
@@ -374,7 +384,7 @@ p:hover::after {
   cursor: pointer;
 }
 
-#btnPulisci{
+#btnPulisci {
   width: 10vw !important;
   height: 3rem;
   border: 1px solid #000;
@@ -386,7 +396,7 @@ p:hover::after {
 
 }
 
-#perizieh1{
+#perizieh1 {
   font-size: 2rem;
   color: white;
   padding-top: 3vh;
@@ -425,7 +435,7 @@ button:not(:hover) {
   }
 }
 
-#divModificaUtente{
+#divModificaUtente {
   height: 100vh;
   width: 100vw;
   background-color: #000a;
@@ -436,7 +446,7 @@ button:not(:hover) {
   animation: animBGColorInfoMarker 1s forwards;
 }
 
-#divModificaUtente > span > div {
+#divModificaUtente>span>div {
   display: grid;
   justify-content: center;
   align-items: center;
@@ -445,14 +455,14 @@ button:not(:hover) {
   border-radius: 3.5vh;
   position: absolute;
   top: 20vh;
-  bottom:20vh;
+  bottom: 20vh;
   left: 50vh;
   right: 50vh;
   transform: translateY(200%);
   animation: animInfoMarker 0.7s forwards ease-out;
 }
 
-#divInfoMarker > span > div {
+#divInfoMarker>span>div {
   display: grid;
   justify-content: center;
   align-items: center;
@@ -461,7 +471,7 @@ button:not(:hover) {
   border-radius: 3.5vh;
   position: absolute;
   top: 20vh;
-  bottom:20vh;
+  bottom: 20vh;
   left: 30vh;
   right: 30vh;
   transform: translateY(200%);
@@ -469,16 +479,16 @@ button:not(:hover) {
 }
 
 
-#divInfoMarker > span > div > h1 {
+#divInfoMarker>span>div>h1 {
   text-align: center;
 }
 
-#divModificaUtente > span > div > h1 {
+#divModificaUtente>span>div>h1 {
   text-align: center;
 }
 
-#divInfoPerizia > span > div {
-  display: flex;  
+#divInfoPerizia>span>div {
+  display: flex;
   align-items: center;
   flex-direction: column;
   background-color: #222222;
@@ -486,7 +496,7 @@ button:not(:hover) {
   border-radius: 3.5vh;
   position: absolute;
   top: 15vh;
-  bottom:15vh;
+  bottom: 15vh;
   left: 60vh;
   right: 60vh;
   padding: 5vh;
@@ -495,23 +505,23 @@ button:not(:hover) {
   animation: animInfoMarker 0.7s forwards ease-out;
 }
 
-#divInfoMarker > span > div > span {
+#divInfoMarker>span>div>span {
   margin: 1vw;
 }
 
-#divInfoPerizia > span > div > span {
+#divInfoPerizia>span>div>span {
   margin: 1vw;
 }
 
-#divModificaUtente > span > div > span {
+#divModificaUtente>span>div>span {
   margin: 1vw;
 }
 
-#divInfoMarker > span > div > span:hover {
+#divInfoMarker>span>div>span:hover {
   animation: xRossa 0.5s forwards;
 }
 
-#divInfoPerizia > span > div > span:hover {
+#divInfoPerizia>span>div>span:hover {
   animation: xRossa 0.5s forwards;
 }
 
@@ -525,21 +535,21 @@ button:not(:hover) {
   }
 }
 
-#divInfoMarker > span > div > span:not(:hover) {
+#divInfoMarker>span>div>span:not(:hover) {
   animation: xNotRossa 0.5s forwards;
 }
 
-#divModificaUtente > span > div > span:not(:hover) {
+#divModificaUtente>span>div>span:not(:hover) {
   animation: xNotRossa 0.5s forwards;
 }
 
-#divInfoPerizia > span > div > span:not(:hover) {
+#divInfoPerizia>span>div>span:not(:hover) {
   animation: xNotRossa 0.5s forwards;
 }
 
 @keyframes xNotRossa {
   0% {
-    
+
     color: red;
   }
 
@@ -548,7 +558,7 @@ button:not(:hover) {
   }
 }
 
-@keyframes animInfoMarker{
+@keyframes animInfoMarker {
   0% {
     transform: translateY(200%);
   }
@@ -558,18 +568,7 @@ button:not(:hover) {
   }
 }
 
-#divInfoMarker{
-  height: 100vh;
-  width: 100vw;
-  background-color: #000a;
-  z-index: 50;
-  position: fixed;
-  inset: 0;
-  padding-right: var(--w-menu);
-  animation: animBGColorInfoMarker 1s forwards;
-} 
-
-#divInfoPerizia{
+#divInfoMarker {
   height: 100vh;
   width: 100vw;
   background-color: #000a;
@@ -580,40 +579,51 @@ button:not(:hover) {
   animation: animBGColorInfoMarker 1s forwards;
 }
 
-@keyframes animBGColorInfoMarker{
+#divInfoPerizia {
+  height: 100vh;
+  width: 100vw;
+  background-color: #000a;
+  z-index: 50;
+  position: fixed;
+  inset: 0;
+  padding-right: var(--w-menu);
+  animation: animBGColorInfoMarker 1s forwards;
+}
+
+@keyframes animBGColorInfoMarker {
   0% {
     background-color: transparent;
   }
 
   100% {
-    
+
     background-color: #000a;
   }
 }
 
-#divInfoMarker > span{
-  position:relative;
+#divInfoMarker>span {
+  position: relative;
   display: block;
   height: 100%;
 }
 
-#divModificaUtente > span{
-  position:relative;
+#divModificaUtente>span {
+  position: relative;
   display: block;
   height: 100%;
 }
 
-#divInfoPerizia > span{
-  position:relative;
+#divInfoPerizia>span {
+  position: relative;
   display: block;
   height: 100%;
 }
 
-.chiudiInfoMarker{
+.chiudiInfoMarker {
   animation: chiudiInfoMarker 0.7s forwards ease-out;
 }
 
-@keyframes chiudiInfoMarker{
+@keyframes chiudiInfoMarker {
   0% {
     transform: translateY(0%);
   }
@@ -623,11 +633,11 @@ button:not(:hover) {
   }
 }
 
-.togliOpacity{
+.togliOpacity {
   animation: togliOpacity 0.7s forwards ease-out;
 }
 
-@keyframes togliOpacity{
+@keyframes togliOpacity {
   0% {
     background-color: #000a;
   }
@@ -637,17 +647,17 @@ button:not(:hover) {
   }
 }
 
-.cambiaCursor{
+.cambiaCursor {
   cursor: url(https://upload.wikimedia.org/wikipedia/commons/d/d1/Google_Maps_pin.svg), auto !important;
-  
+
 }
 
-google-map{
+google-map {
   cursor: inherit !important;
-  
+
 }
 
-#datepicker{
+#datepicker {
   width: 20vw;
   height: 3rem;
   border: 1px solid #000;
@@ -656,7 +666,7 @@ google-map{
   border-radius: 3.5vh;
 }
 
-#descPerizia{
+#descPerizia {
   width: 20vw;
   height: 15vh;
   border: 1px solid #000;
@@ -665,44 +675,44 @@ google-map{
   border-radius: 3.5vh;
 }
 
-#editUser{
+#editUser {
   cursor: pointer;
 }
 
-#txtIdOperatore{
+#txtIdOperatore {
   width: 5vw;
   text-align: center;
 }
 
-#txtTitoloPerizia{
+#txtTitoloPerizia {
   width: 10vw;
   text-align: center;
 
 }
 
-#datetimepicker{
+#datetimepicker {
   width: 10vw;
 }
 
-#txtFile{
+#txtFile {
   display: none;
 }
 
-.fileUpload{
+.fileUpload {
   border: 1px solid #ccc;
   display: inline-block;
   padding: 6px 12px;
   cursor: pointer;
 }
 
-.divImmagini{
+.divImmagini {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 }
 
-#contenitoreImmagini{
+#contenitoreImmagini {
   height: calc(100% - 10vh);
   display: flex;
   flex-direction: row;
@@ -713,33 +723,36 @@ google-map{
   overflow: overlay;
 }
 
-#contenitoreImmagini::-webkit-scrollbar-track
-{
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	background-color: #F5F5F5;
-	border-radius: 10px;
+#contenitoreImmagini::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #F5F5F5;
+  border-radius: 10px;
 }
 
-#contenitoreImmagini::-webkit-scrollbar
-{
-	width: 10px;
-	background-color: #222222;
+#contenitoreImmagini::-webkit-scrollbar {
+  width: 10px;
+  background-color: #222222;
 }
 
-#contenitoreImmagini::-webkit-scrollbar-thumb
-{
-	border-radius: 10px;
-	background-image: -webkit-gradient(linear,
-									   left bottom,
-									   left top,
-									   color-stop(0.44, rgb(255, 255, 255)),
-									   color-stop(0.72, rgb(142, 146, 150)),
-									   color-stop(0.86, rgb(49, 49, 49)));
+#contenitoreImmagini::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-image: -webkit-gradient(linear,
+      left bottom,
+      left top,
+      color-stop(0.44, rgb(255, 255, 255)),
+      color-stop(0.72, rgb(142, 146, 150)),
+      color-stop(0.86, rgb(49, 49, 49)));
 }
 
-#imgPerizia{
+#imgPerizia {
   width: 15vw;
   height: 30vh;
 }
 
-
+#iconLogout{
+  font-size: 3.5rem;
+  cursor: pointer;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
