@@ -119,7 +119,7 @@
                     <td><span class="material-symbols-outlined" id="deleteUser"
                             (click)="eliminaUtente(utente._id)">delete</span></td>
                     <td>
-                        <span class="material-symbols-outlined" id="editUser" (click)="editUtente()">edit</span>
+                        <span class="material-symbols-outlined" id="editUser" (click)="editUtente(utente)">edit</span>
                     </td>
                 </tr>
                 }
@@ -130,13 +130,22 @@
     </div>
 
     @if(edit){
-        <div id="divInfoMarker" [class.togliOpacity]="togliOpacity">
+        <div id="divModificaUtente" [class.togliOpacity]="togliOpacity">
             <span>
                 <div [class.chiudiInfoMarker]="chiudiInfoMarker">
                     <span class="material-symbols-outlined" id="xClose" (click)="chiudiEditUtente()">
                         close
                     </span>
-                    
+                    <div id="divIntermedio">
+                        <form>
+                            <input type="text" placeholder="Nome" name="nome" [(ngModel)]="nuovoNome">
+                            <input type="text" placeholder="Cognome" name="cognome" [(ngModel)]="nuovoCognome">
+                            <input type="text" placeholder="Nome Utente" name="username" [(ngModel)]="nuovoUsername">
+                            <input type="text" placeholder="Email" name="email" [(ngModel)]="nuovaEmail">
+                            <input type="text" placeholder="Sesso" name="sesso" [(ngModel)]="nuovoSesso">
+                            <button (click)="applicaModificheUtente()">Modifica</button>
+                        </form>
+                    </div>
                     
                 </div>
             </span>
@@ -244,7 +253,7 @@
                     <td><span class="material-symbols-outlined" id="deleteUser"
                             (click)="eliminaUtente(utenteCercato._id)">delete</span></td>
                     <td>
-                        <span class="material-symbols-outlined" id="editUser" (click)="editUtente()">edit</span>
+                        <span class="material-symbols-outlined" id="editUser" (click)="editUtente(utenteCercato)">edit</span>
                     </td>
                 </tr>
                 }

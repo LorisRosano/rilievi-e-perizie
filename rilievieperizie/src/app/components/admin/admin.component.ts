@@ -91,6 +91,13 @@ export class AdminComponent {
   aspettaImmagini:boolean = false;
   visualizzaImmaginiPerizie:boolean = false;
 
+  utenteModificato:any;
+  nuovoNome:any;
+  nuovoCognome:any;
+  nuovoUsername: any;
+  nuovaEmail: any;
+  nuovoSesso: any;
+
   edit:boolean = false;
 
   ngOnInit() {
@@ -312,12 +319,26 @@ export class AdminComponent {
     this.nascondiPerizie = true;
   }
 
-  editUtente() {
+  editUtente(utente: any) {
     this.edit = true;
+    this.utenteModificato = utente;
+    console.log(this.utenteModificato);
   }
 
   chiudiEditUtente(){
     this.edit = false;
+  }
+
+  applicaModificheUtente(){
+    let nome, cognome, username, email, sesso;
+    if(this.nuovoNome == "") {nome = this.utenteModificato.nome} else {nome = this.nuovoNome;}
+    if(this.nuovoCognome == "") {cognome = this.utenteModificato.cognome} else {cognome = this.nuovoCognome;}
+    if(this.nuovoUsername == "") {username = this.utenteModificato.username} else {username = this.nuovoUsername;}
+    if(this.nuovaEmail == "") {email = this.utenteModificato.email} else {email = this.nuovaEmail;}
+    if(this.nuovoSesso == "") {sesso = this.utenteModificato.sesso} else {sesso = this.nuovoSesso;}
+
+    let rq = this.server.inviaRichiesta("post", "/modificaUtente", {id: this.utenteModificato.id, nome: nome, cognome: cognome, username: username, email: email, sesso: sesso});
+    this.caricaUtenti();
   }
 
   getNuovoID() {

@@ -273,6 +273,22 @@ app.post("/api/addImages", (req, res, next) => {
         .finally(() => client.close());
 });
 
+app.post("/api/modificaUtente", async (req, res, next) => {
+    let id = req["body"]["id"];
+    let nome = req["body"]["nome"];
+    let cognome = req["body"]["cognome"];
+    let username = req["body"]["username"];
+    let email = req["body"]["email"];
+    let sesso = req["body"]["sesso"];
+    const client = new MongoClient(connectionString);
+    await client.connect();
+    let collection = client.db(DBNAME).collection("utenti");
+    let rq = collection.updateOne({ "id": id }, { $set: { "username": username, "email": email, "cognome": cognome, "nome": nome, "sesso": sesso } });
+    rq.then((data) => res.send(data));
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
+    rq.finally(() => client.close());
+});
+
 //********************************************************************************************//
 // Default route e gestione degli errori
 //********************************************************************************************//

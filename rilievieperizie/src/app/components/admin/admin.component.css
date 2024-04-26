@@ -424,6 +424,34 @@ button:not(:hover) {
     color: white;
   }
 }
+
+#divModificaUtente{
+  height: 100vh;
+  width: 100vw;
+  background-color: #000a;
+  z-index: 50;
+  position: fixed;
+  inset: 0;
+  padding-right: var(--w-menu);
+  animation: animBGColorInfoMarker 1s forwards;
+}
+
+#divModificaUtente > span > div {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  background-color: #222222;
+  color: white;
+  border-radius: 3.5vh;
+  position: absolute;
+  top: 20vh;
+  bottom:20vh;
+  left: 50vh;
+  right: 50vh;
+  transform: translateY(200%);
+  animation: animInfoMarker 0.7s forwards ease-out;
+}
+
 #divInfoMarker > span > div {
   display: grid;
   justify-content: center;
@@ -440,7 +468,12 @@ button:not(:hover) {
   animation: animInfoMarker 0.7s forwards ease-out;
 }
 
+
 #divInfoMarker > span > div > h1 {
+  text-align: center;
+}
+
+#divModificaUtente > span > div > h1 {
   text-align: center;
 }
 
@@ -470,6 +503,10 @@ button:not(:hover) {
   margin: 1vw;
 }
 
+#divModificaUtente > span > div > span {
+  margin: 1vw;
+}
+
 #divInfoMarker > span > div > span:hover {
   animation: xRossa 0.5s forwards;
 }
@@ -489,6 +526,10 @@ button:not(:hover) {
 }
 
 #divInfoMarker > span > div > span:not(:hover) {
+  animation: xNotRossa 0.5s forwards;
+}
+
+#divModificaUtente > span > div > span:not(:hover) {
   animation: xNotRossa 0.5s forwards;
 }
 
@@ -551,6 +592,12 @@ button:not(:hover) {
 }
 
 #divInfoMarker > span{
+  position:relative;
+  display: block;
+  height: 100%;
+}
+
+#divModificaUtente > span{
   position:relative;
   display: block;
   height: 100%;
