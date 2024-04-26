@@ -85,6 +85,13 @@ export class AdminComponent {
   titoloPerizia: any;
   idOperatorePerizia: any;
   descPerizia: any;
+  fotoPerizie: any = [];
+  fotoPerizaCorrente:any = [];
+
+  aspettaImmagini:boolean = false;
+  visualizzaImmaginiPerizie:boolean = false;
+
+  edit:boolean = false;
 
   ngOnInit() {
     this.caricaPerizie();
@@ -156,33 +163,33 @@ export class AdminComponent {
     // this.visualizzaDivInfoMarker = true;
     // console.log
 
-     
-      const destination = marker.position;
-      const directionsService = new google.maps.DirectionsService();
-      const directionsRenderer = new google.maps.DirectionsRenderer();
-      // const sideBar: HTMLElement = document.getElementById("sidebar") as HTMLElement;
 
-      // sideBar.innerHTML = '';
+    const destination = marker.position;
+    const directionsService = new google.maps.DirectionsService();
+    const directionsRenderer = new google.maps.DirectionsRenderer();
+    // const sideBar: HTMLElement = document.getElementById("sidebar") as HTMLElement;
 
-      this.map.panTo(destination);
-      directionsRenderer.setMap(this.map.googleMap!);
-      // directionsRenderer.setPanel(sideBar);
+    // sideBar.innerHTML = '';
 
-      const request: google.maps.DirectionsRequest = {
-        origin: this.sedeCentrale,
-        destination: destination,
-        travelMode: google.maps.TravelMode.DRIVING, // 
-        provideRouteAlternatives: true
-      };
+    this.map.panTo(destination);
+    directionsRenderer.setMap(this.map.googleMap!);
+    // directionsRenderer.setPanel(sideBar);
 
-      directionsService.route(request, (result, status) => {
-        if (status === google.maps.DirectionsStatus.OK) {
-          directionsRenderer.setDirections(result);
-        } else {
-          console.error('Errore durante il calcolo del percorso:', status);
-        }
-      });
-    
+    const request: google.maps.DirectionsRequest = {
+      origin: this.sedeCentrale,
+      destination: destination,
+      travelMode: google.maps.TravelMode.DRIVING, // 
+      provideRouteAlternatives: true
+    };
+
+    directionsService.route(request, (result, status) => {
+      if (status === google.maps.DirectionsStatus.OK) {
+        directionsRenderer.setDirections(result);
+      } else {
+        console.error('Errore durante il calcolo del percorso:', status);
+      }
+    });
+
   }
 
   chiudiDivInfoMarker() {
@@ -255,6 +262,8 @@ export class AdminComponent {
     this.markers = this.markers.filter((marker: any) => {
       return marker.title != titolo;
     });
+
+    this.idPeriziaCorrente--;
   }
 
   async aggiungiUtente() {
@@ -304,7 +313,11 @@ export class AdminComponent {
   }
 
   editUtente() {
+    this.edit = true;
+  }
 
+  chiudiEditUtente(){
+    this.edit = false;
   }
 
   getNuovoID() {
@@ -370,7 +383,7 @@ export class AdminComponent {
       codiceOperatore: this.idOperatorePerizia,
       dataOra: this.dataOraPerizia.toString(),
       descrizione: this.descPerizia,
-      images: [],
+      images: this.fotoPerizie,
       idPerizia: this.idPeriziaCorrente.toString(),
       lat: this.latPeriziaCorrente.toString(),
       lng: this.lngPeriziaCorrente.toString(),
@@ -393,14 +406,52 @@ export class AdminComponent {
       console.log(error);
     });
 
+    this.titoloPerizia = "";
+    this.idOperatorePerizia = "";
+    this.descPerizia = "";
+    this.dataOraPerizia = "";
+    this.txtFile = "";
+    this.fotoPerizie = [];
 
   }
 
   async aggiungiImmaginiCloudinary(event: any) {
     const selectedFile: File = event.target.files[0];
+    console.log(event.target);
 
-    this.uploadImageOnCloudinary(selectedFile);
+    for (let photo of event.target.files) {
+      this.base64Convert(selectedFile).then((base64: any) => {
+        console.log(base64);
 
+        let rq = this.server.inviaRichiesta("post", "/addBase64CloudinaryImage", { codiceOperatore: this.idOperatorePerizia, imgBase64: base64 });
+        rq!.then((data: any) => {
+          this.fotoPerizie.push(data.url);
+          console.log(this.fotoPerizie);
+          this.aspettaImmagini = true;
+        }).catch((error: any) => {
+          console.log(error);
+        });
+        
+      }).catch((error: any) => {
+        console.log(error);
+      });
+    }
+
+    // let rq = this.server.inviaRichiesta("post", "/addImages", { idPerizia: this.idPeriziaCorrente, images: this.fotoPerizie });
+
+  }
+
+  base64Convert(fileObject: any) {
+    return new Promise((resolve, reject) => {
+      let reader = new FileReader();
+      reader.readAsDataURL(fileObject);
+      reader.onload = (event) => {
+        resolve(event.target!.result);
+      }
+      reader.onerror = (err) => {
+        reject(err);
+      }
+    });
   }
 
   uploadImageOnCloudinary(file: File) {
@@ -432,5 +483,27 @@ export class AdminComponent {
 
     console.log(this.markers);
 
+  }
+
+  visualizzaImmagini(idPerizia: any) {
+    this.visualizzaImmaginiPerizie = true;
+
+    let perizia = this.listaPerizie.filter((perizia: any) => {
+      return perizia.idPerizia == idPerizia;
+    });
+
+    console.log(perizia);
+    console.log(perizia[0].images);
+
+    for(let img of perizia[0].images){
+      this.fotoPerizaCorrente.push(img);
+    }
+
+    console.log(this.fotoPerizaCorrente);
+  }
+
+  chiudiImmaginiPerizie(){
+    this.visualizzaImmaginiPerizie = false;
+    this.fotoPerizaCorrente = [];
   }
 }

@@ -26,7 +26,6 @@
             </div>
         </span>
     </div>
-
     }
 
     @if(visualizzaDivInfoPerizia){
@@ -49,9 +48,9 @@
                 <input type="text" id="txtIdOperatore" name="txtIdOperatore" [(ngModel)]="idOperatorePerizia">
 
                 <label for="txtFile" class="fileUpload">Aggiungi Immagini</label>
-                <input type="file" id="txtFile" [(ngModel)]="txtFile" (change)="aggiungiImmaginiCloudinary($event)">
+                <input type="file" id="txtFile" [(ngModel)]="txtFile" (change)="aggiungiImmaginiCloudinary($event)" multiple>
 
-                <button id="btnAggiungiPerizia" (click)="inviaInfo()">Aggiungi perizia</button>
+                <button id="btnAggiungiPerizia" (click)="inviaInfo()" >Aggiungi perizia</button>
             </div>
         </span>
     </div>
@@ -130,6 +129,22 @@
 
     </div>
 
+    @if(edit){
+        <div id="divInfoMarker" [class.togliOpacity]="togliOpacity">
+            <span>
+                <div [class.chiudiInfoMarker]="chiudiInfoMarker">
+                    <span class="material-symbols-outlined" id="xClose" (click)="chiudiEditUtente()">
+                        close
+                    </span>
+                    
+                    
+                </div>
+            </span>
+        </div>
+    }
+
+   
+
     <div id="divListaPerizie" [class.apriDivAggiungiUtente]="animazioni.apri.listaPerizie"
         [class.chiudiDivAggiungiUtente]="animazioni.chiudi.listaPerizie">
 
@@ -165,7 +180,7 @@
                     <td>{{stampaDataOra(perizia.dataOra)[1]}}</td>
                     <td>{{indirizzoPerizia(perizia.lat, perizia.lng)}}</td>
                     <td>{{perizia.descrizione}}</td>
-                    <td><span class="material-symbols-outlined" id="deleteUser">photo_camera</span></td>
+                    <td><span class="material-symbols-outlined" id="deleteUser" (click)="visualizzaImmagini(perizia.idPerizia)">photo_camera</span></td>
                     <td><span class="material-symbols-outlined" id="deleteUser" (click)="eliminaPerizia(perizia.Title, perizia._id)">delete</span></td>
                 </tr>
                 }
@@ -173,6 +188,27 @@
         </div>
 
     </div>
+
+    @if(visualizzaImmaginiPerizie){
+        <div id="divInfoMarker" [class.togliOpacity]="togliOpacity">
+            <span>
+                <div [class.chiudiInfoMarker]="chiudiInfoMarker">
+                    <span class="material-symbols-outlined" id="xClose" (click)="chiudiImmaginiPerizie()">
+                        close
+                    </span>
+                    <h1>Immagini Perizia</h1>
+                    <div id="contenitoreImmagini">
+                        @for (immagine of fotoPerizaCorrente; track $index) {
+                            <div class="divImmagini">
+                                <img src="{{immagine}}" id="imgPerizia">
+                            </div>
+                        }
+                    </div>
+                    
+                </div>
+            </span>
+        </div>
+    }
 
     <div id="divCercaUtente" [class.apriDivAggiungiUtente]="animazioni.apri.cercaUtente"
         [class.chiudiDivAggiungiUtente]="animazioni.chiudi.cercaUtente">
@@ -230,7 +266,7 @@
                     <td>{{stampaDataOra(perizia.dataOra)[1]}}</td>
                     <td>{{indirizzoPerizia(perizia.lat, perizia.lng)}}</td>
                     <td>{{perizia.descrizione}}</td>
-                    <td><span class="material-symbols-outlined" id="deleteUser">photo_camera</span></td>
+                    <td><span class="material-symbols-outlined" id="deleteUser" (click)="visualizzaImmagini(perizia.idPerizia)">photo_camera</span></td>
                 </tr>
                 }
             </table>

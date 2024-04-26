@@ -15,10 +15,9 @@ const DBNAME = process.env.DBNAME;
 const connectionString: string = process.env.connectionStringAtlas;
 
 cloudinary.v2.config({
-    cloudName: process.env.CLOUD_NAME,
-    API_KEY: process.env.API_KEY,
-    API_SECRET: process.env.API_SECRET,
-    CLOUDINARY_URL: process.env.CLOUDINARY_URL
+    cloud_name: "db2pqebl7",
+    api_key: "251943897415567",
+    api_secret: "gDj1lpCFHKe4YPlaBo_UqRnuUlg"
 });
 const app = _express();
 
@@ -224,6 +223,7 @@ app.post("/api/aggiungiPerizia", async (req, res, next) => {
     let codiceOperatore = perizia.codiceOperatore;
     let dataPerizia = perizia.dataOra;
     let descrizione = perizia.descrizione;
+    let images = perizia.images;
     let lat = perizia.lat;
     let lng = perizia.lng;
     let title = perizia.Title;
@@ -233,46 +233,45 @@ app.post("/api/aggiungiPerizia", async (req, res, next) => {
     const client = new MongoClient(connectionString);
     await client.connect();
     let collection = client.db(DBNAME).collection("perizie");
-    let rq = collection.insertOne({ "idPerizia": idPerizia, "codiceOperatore": codiceOperatore, "dataOra": dataPerizia, "descrizione": descrizione, "lat": lat, "lng": lng, "Title": title });
+    let rq = collection.insertOne({ "idPerizia": idPerizia, "codiceOperatore": codiceOperatore, "dataOra": dataPerizia, "descrizione": descrizione, "images": images, "lat": lat, "lng": lng, "Title": title });
     rq.then((data) => res.send(data));
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
     rq.finally(() => client.close());
 });
 
 app.post("/api/addBase64CloudinaryImage", (req, res, next) => {
-    let username = req["body"].username;
+    let codiceOperatore = req["body"].codiceOperatore;
     let imgBase64 = req["body"].imgBase64;
-    cloudinary.v2.uploader.upload(imgBase64, { "folder": "Es_03_Upload" })
+    
+    cloudinary.v2.uploader.upload(imgBase64, { "folder": "imgPerizie" })
         .catch((err) => {
             res.status(500).send(`Error while uploading file on Cloudinary: ${err}`);
         })
         .then(async function (response: UploadApiResponse) {
             const client = new MongoClient(connectionString);
             await client.connect();
-            let collection = client.db(DBNAME).collection("images");
-            let rq = collection.insertOne({ username, "img": response.secure_url });
-            rq.then((data) => res.send(data));
+            let collection = client.db(DBNAME).collection("perizie");
+            let rq = collection.find().toArray();
+            rq.then((data) => res.send({"url": response.secure_url}));
             rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
             rq.finally(() => client.close());
         });
 });
 
-// app.post('/upload-image', (req, res) => {
-//     const file = req.files.file;
-  
-//     // Carica l'immagine su Cloudinary
-//     cloudinary.uploader.upload(file.tempFilePath, (error, result) => {
-//       if (error) {
-//         console.error('Errore durante il caricamento su Cloudinary:', error);
-//         res.status(500).json({ error: 'Errore durante il caricamento su Cloudinary' });
-//       } else {
-//         // Ottieni l'URL pubblico dell'immagine caricata da Cloudinary
-//         const imageUrl = result.secure_url;
-//         // Invia l'URL dell'immagine al client Angular
-//         res.json({ imageUrl });
-//       }
-//     });
-//   });
+app.post("/api/addImages", (req, res, next) => {
+    let idPerizia = req["body"].idPerizia;
+    let images = req["body"].images;
+    const client = new MongoClient(connectionString);
+    client.connect()
+        .then(() => {
+            let collection = client.db(DBNAME).collection("perizie");
+            let rq = collection.updateOne({ "idPerizia": idPerizia }, { $set: { "images": images } });
+            return rq;
+        })
+        .then((data) => res.send(data))
+        .catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`))
+        .finally(() => client.close());
+});
 
 //********************************************************************************************//
 // Default route e gestione degli errori
