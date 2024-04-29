@@ -106,6 +106,7 @@ export class AdminComponent {
   lngPeriziaVisualizzata: any;
   titlePeriziaVisualizzata: any;
   markerPeriziaVisualizzata: any;
+  idPeriziaVisualizzata: any;
 
   edit:boolean = false;
 
@@ -187,6 +188,7 @@ export class AdminComponent {
     this.descPeriziaVisualizzata = perizia.descrizione;
     this.latPeriziaVisualizzata = perizia.lat;
     this.lngPeriziaVisualizzata = perizia.lng;
+    this.idPeriziaVisualizzata = perizia.idPerizia;
 
     // let address = this.getAddress(perizia.lat, perizia.lng);
 
@@ -351,7 +353,7 @@ export class AdminComponent {
       this.coloreUtenteNONAggiunto = true;
       this.coloreUtenteAggiunto = false;
     });
-
+    this.caricaUtenti();
   }
 
   cercaUtente() {
@@ -386,7 +388,7 @@ export class AdminComponent {
   editUtente(utente: any) {
     this.edit = true;
     this.utenteModificato = utente;
-    console.log(this.utenteModificato);
+    console.log(this.utenteModificato)
   }
 
   chiudiEditUtente(){
@@ -394,15 +396,19 @@ export class AdminComponent {
   }
 
   applicaModificheUtente(){
+    console.log(this.utenteModificato)
     let nome, cognome, username, email, sesso;
-    if(this.nuovoNome == "") {nome = this.utenteModificato.nome} else {nome = this.nuovoNome;}
-    if(this.nuovoCognome == "") {cognome = this.utenteModificato.cognome} else {cognome = this.nuovoCognome;}
-    if(this.nuovoUsername == "") {username = this.utenteModificato.username} else {username = this.nuovoUsername;}
-    if(this.nuovaEmail == "") {email = this.utenteModificato.email} else {email = this.nuovaEmail;}
-    if(this.nuovoSesso == "") {sesso = this.utenteModificato.sesso} else {sesso = this.nuovoSesso;}
+    if(!this.nuovoNome) {nome = this.utenteModificato.nome} else {nome = this.nuovoNome;}
+    if(!this.nuovoCognome) {cognome = this.utenteModificato.cognome} else {cognome = this.nuovoCognome;}
+    if(!this.nuovoUsername) {username = this.utenteModificato.username} else {username = this.nuovoUsername;}
+    if(!this.nuovaEmail) {email = this.utenteModificato.email} else {email = this.nuovaEmail;}
+    if(!this.nuovoSesso) {sesso = this.utenteModificato.sesso} else {sesso = this.nuovoSesso;}
+
+    console.log(this.nuovoNome, this.nuovoCognome, this.nuovoUsername, this.nuovaEmail, this.nuovoSesso)
 
     let rq = this.server.inviaRichiesta("post", "/modificaUtente", {id: this.utenteModificato.id, nome: nome, cognome: cognome, username: username, email: email, sesso: sesso});
     this.caricaUtenti();
+    this.edit = false;
   }
 
   getNuovoID() {
@@ -558,6 +564,7 @@ export class AdminComponent {
   }
 
   visualizzaImmagini(idPerizia: any) {
+    console.log(idPerizia);
     this.visualizzaImmaginiPerizie = true;
 
     let perizia = this.listaPerizie.filter((perizia: any) => {
