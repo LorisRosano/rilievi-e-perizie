@@ -99,6 +99,14 @@ export class AdminComponent {
   nuovaEmail: any;
   nuovoSesso: any;
 
+  codOpPeriziaVisualizzata: any;
+  dataOraPeriziaVisualizzata: any;
+  descPeriziaVisualizzata: any;
+  latPeriziaVisualizzata: any;
+  lngPeriziaVisualizzata: any;
+  titlePeriziaVisualizzata: any;
+  markerPeriziaVisualizzata: any;
+
   edit:boolean = false;
 
   ngOnInit() {
@@ -173,11 +181,16 @@ export class AdminComponent {
 
     let perizia = this.getPeriziaByTitle(title);
 
-    console.log(perizia);
+    this.titlePeriziaVisualizzata = perizia.Title;
+    this.codOpPeriziaVisualizzata = perizia.codiceOperatore;
+    this.dataOraPeriziaVisualizzata= this.stampaDataOra(perizia.dataOra);
+    this.descPeriziaVisualizzata = perizia.descrizione;
+    this.latPeriziaVisualizzata = perizia.lat;
+    this.lngPeriziaVisualizzata = perizia.lng;
 
-    let address = this.getAddress(perizia.lat, perizia.lng);
+    // let address = this.getAddress(perizia.lat, perizia.lng);
 
-    this.visualizzaPercorso(marker);
+    this.markerPeriziaVisualizzata = marker;
     
 
   }
@@ -214,6 +227,12 @@ export class AdminComponent {
     });
     
       
+  }
+
+  btnPercorso(){
+    
+    this.visualizzaDivInfoMarker = false;
+    this.visualizzaPercorso(this.markerPeriziaVisualizzata);
   }
 
   visualizzaPercorso(marker:any){

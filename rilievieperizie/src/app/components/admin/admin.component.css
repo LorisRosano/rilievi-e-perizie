@@ -470,6 +470,27 @@ button:not(:hover) {
   color: white;
   border-radius: 3.5vh;
   position: absolute;
+  top: 15vh;
+  bottom: 15vh;
+  left: 50vh;
+  right: 50vh;
+  transform: translateY(200%);
+  animation: animInfoMarker 0.7s forwards ease-out;
+}
+
+.divPerizia{
+  text-align: center;
+  width: auto;
+}
+
+#divIMGPerizia>span>div {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  background-color: #222222;
+  color: white;
+  border-radius: 3.5vh;
+  position: absolute;
   top: 20vh;
   bottom: 20vh;
   left: 30vh;
@@ -478,8 +499,27 @@ button:not(:hover) {
   animation: animInfoMarker 0.7s forwards ease-out;
 }
 
+#divInfo{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #222222;
+  color: white;
+  border-radius: 3.5vh;
+  width: 100%;
+  height: 100%;
+  border: 3px solid white;
+  padding: 3vh;
+  gap: 1.5vh;
+}
+
 
 #divInfoMarker>span>div>h1 {
+  text-align: center;
+}
+
+#divIMGPerizia>span>div>h1 {
   text-align: center;
 }
 
@@ -495,8 +535,8 @@ button:not(:hover) {
   color: white;
   border-radius: 3.5vh;
   position: absolute;
-  top: 15vh;
-  bottom: 15vh;
+  top: 10vh;
+  bottom: 10vh;
   left: 60vh;
   right: 60vh;
   padding: 5vh;
@@ -509,6 +549,10 @@ button:not(:hover) {
   margin: 1vw;
 }
 
+#divIMGPerizia>span>div>span {
+  margin: 1vw;
+}
+
 #divInfoPerizia>span>div>span {
   margin: 1vw;
 }
@@ -518,6 +562,10 @@ button:not(:hover) {
 }
 
 #divInfoMarker>span>div>span:hover {
+  animation: xRossa 0.5s forwards;
+}
+
+#divIMGPerizia>span>div>span:hover {
   animation: xRossa 0.5s forwards;
 }
 
@@ -536,6 +584,10 @@ button:not(:hover) {
 }
 
 #divInfoMarker>span>div>span:not(:hover) {
+  animation: xNotRossa 0.5s forwards;
+}
+
+#divIMGPerizia>span>div>span:not(:hover) {
   animation: xNotRossa 0.5s forwards;
 }
 
@@ -579,6 +631,18 @@ button:not(:hover) {
   animation: animBGColorInfoMarker 1s forwards;
 }
 
+
+#divIMGPerizia {
+  height: 100vh;
+  width: 100vw;
+  background-color: #000a;
+  z-index: 50;
+  position: fixed;
+  inset: 0;
+  padding-right: var(--w-menu);
+  animation: animBGColorInfoMarker 1s forwards;
+}
+
 #divInfoPerizia {
   height: 100vh;
   width: 100vw;
@@ -602,6 +666,13 @@ button:not(:hover) {
 }
 
 #divInfoMarker>span {
+  position: relative;
+  display: block;
+  height: 100%;
+}
+
+
+#divIMGPerizia>span {
   position: relative;
   display: block;
   height: 100%;

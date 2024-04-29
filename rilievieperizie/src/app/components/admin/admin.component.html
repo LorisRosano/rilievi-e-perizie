@@ -22,9 +22,20 @@
                 <span class="material-symbols-outlined" id="xClose" (click)="chiudiDivInfoMarker()">
                     close
                 </span>
+                <h1>{{titlePeriziaVisualizzata}}</h1>
                 <div id="divInfo">
-                    <h1></h1>
+                    <h3>Descrizione</h3>
+                    <div class="divPerizia">{{descPeriziaVisualizzata}}</div>
+                    <h3>Data e Ora</h3>
+                    <div class="divPerizia">{{dataOraPeriziaVisualizzata}}</div>
+                    <h3>Latitudine</h3>
+                    <div class="divPerizia">{{latPeriziaVisualizzata}}</div>
+                    <h3>Longitudine</h3>
+                    <div class="divPerizia">{{lngPeriziaVisualizzata}}</div>
+                    <h3>Codice operatore</h3>
+                    <div class="divPerizia">{{codOpPeriziaVisualizzata}}</div>
                 </div>
+                <button (click)="btnPercorso()">Visualizza percorso</button>
             </div>
         </span>
     </div>
@@ -204,7 +215,7 @@
     </div>
 
     @if(visualizzaImmaginiPerizie){
-        <div id="divInfoMarker" [class.togliOpacity]="togliOpacity">
+        <div id="divIMGPerizia" [class.togliOpacity]="togliOpacity">
             <span>
                 <div [class.chiudiInfoMarker]="chiudiInfoMarker">
                     <span class="material-symbols-outlined" id="xClose" (click)="chiudiImmaginiPerizie()">
