@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import MapMouseEvent = google.maps.MapMouseEvent;
 import { MapMarker } from '@angular/google-maps';
 
+
 @Component({
   selector: 'AdminComponent',
   standalone: true,
@@ -167,10 +168,55 @@ export class AdminComponent {
   }
 
   infoMarker(event: any, marker: any) {
-    // this.visualizzaDivInfoMarker = true;
-    // console.log
+    this.visualizzaDivInfoMarker = true;
+    let title = marker.title;
+
+    let perizia = this.getPeriziaByTitle(title);
+
+    console.log(perizia);
+
+    let address = this.getAddress(perizia.lat, perizia.lng);
+
+    this.visualizzaPercorso(marker);
+    
+
+  }
+
+  getPeriziaByTitle(title: any) {
+    let perizia = this.listaPerizie.filter((perizia: any) => {
+      return perizia.Title == title;
+    });
+
+    return perizia[0];
 
 
+    // this.markerTitle = perizia[0].Title;
+    // this.idOperatorePerizia = perizia[0].codiceOperatore;
+    // this.dataOraPerizia = this.stampaDataOra(perizia[0].dataOra);
+    // this.descPerizia = perizia[0].descrizione;
+  }
+
+  getAddress(lat:any, lng:any){
+    const apiKey = 'AIzaSyBZKYgxbiyRE7DknUpnRP2QHCBVjvLgH7g';
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
+
+    let rq = this.server.inviaRichiesta("get", url)
+    rq!.then((data: any) => {
+      if (data.status === 'OK' && data.results[0]) {
+        const address = data.results[0].formatted_address;
+        console.log('Indirizzo:', address);
+        return address;
+      } else {
+        console.error('Impossibile trovare l\'indirizzo per le coordinate specificate.');
+      }
+    }).catch((error: any) => {
+      console.log(error);
+    });
+    
+      
+  }
+
+  visualizzaPercorso(marker:any){
     const destination = marker.position;
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer();
@@ -196,7 +242,6 @@ export class AdminComponent {
         console.error('Errore durante il calcolo del percorso:', status);
       }
     });
-
   }
 
   chiudiDivInfoMarker() {
