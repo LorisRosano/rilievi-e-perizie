@@ -213,7 +213,14 @@
                     <td>{{perizia.Title}}</td>
                     <td>{{stampaDataOra(perizia.dataOra)[0]}}</td>
                     <td>{{stampaDataOra(perizia.dataOra)[1]}}</td>
-                    <td><!--   {{getindirizzo(perizia.lat, perizia.lng)}} --></td>
+
+                    @for(indirizzo of indirizzi; track $index){
+                        @if(indirizzo.id == perizia.idPerizia){
+                        <td>{{indirizzo.indirizzo}}</td>
+                        
+                        }
+                    }
+                    
                     <td>{{perizia.descrizione}}</td>
                     <td><span class="material-symbols-outlined" id="editUser" (click)="editPerizia(perizia)">edit</span></td>
                     <td><span class="material-symbols-outlined" id="deleteUser" (click)="visualizzaImmagini(perizia.idPerizia)">photo_camera</span></td>
@@ -325,7 +332,12 @@
                 <tr>
                     <td>{{stampaDataOra(perizia.dataOra)[0]}}</td>
                     <td>{{stampaDataOra(perizia.dataOra)[1]}}</td>
-                    <td> <!--   {{getindirizzo(perizia.lat, perizia.lng)}} --> </td> 
+                    @for(indirizzo of indirizzi; track $index){
+                        @if(indirizzo.id == perizia.idPerizia){
+                        <td>{{indirizzo.indirizzo}}</td>
+                        
+                        }
+                    }
                     <td>{{perizia.descrizione}}</td>
                     <td><span class="material-symbols-outlined" id="deleteUser" (click)="visualizzaImmagini(perizia.idPerizia)">photo_camera</span></td>
                 </tr>

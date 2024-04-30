@@ -39,6 +39,7 @@ export class AdminComponent {
   }
 
   @ViewChild(GoogleMap) map!: GoogleMap;
+  google:any = window.google;
 
   markers: any[];
   markerTitle: any;
@@ -122,6 +123,8 @@ export class AdminComponent {
   erroreRicercaUtente: boolean = false;
   divErroreRicerca:any = "";
 
+  indirizzi: any = [];
+
   ngOnInit() {
     this.caricaPerizie();
     this.caricaUtenti();
@@ -132,9 +135,11 @@ export class AdminComponent {
     rq!.then((data: any) => {
       this.listaPerizie = data;
       this.aggiornaMarker();
+      this.getindirizzo();
     }).catch((error: any) => {
       console.log(error);
     });
+    
   }
 
   aggiornaMarker() {
@@ -164,23 +169,7 @@ export class AdminComponent {
     });
   }
 
-  getindirizzo(lat: any, lng: any){
-    let geocoder = new google.maps.Geocoder();
-    let latlng = {lat: lat, lng: lng}
-    // console.log(latlng)
-    // geocoder.geocode({'location': latlng}, (results: any, status:string) => {
-    //   if (status === 'OK') {
-    //     if (results[0]) {
-    //       this.indirizzo = results[0].formatted_address.split(',')[0]+ ', ' + results[0].formatted_address.split(',')[1]
-    //       console.log(results[0].formatted_address)
-    //     } else {
-    //       console.log('No results found');
-    //     }
-    //   } else {
-    //     console.log('Geocoder failed due to: ' + status);
-    //   }
-    // })
-  }
+  
 
   center: google.maps.LatLngLiteral =
     {
@@ -204,6 +193,26 @@ export class AdminComponent {
       title: 'Sede centrale'
     }];
 
+  }
+
+  getindirizzo() {
+    this.listaPerizie.forEach((perizia: any) => {
+      let geocoder = new this.google.maps.Geocoder();
+      let latlng = {lat: parseFloat(perizia.lat), lng: parseFloat(perizia.lng)}
+      geocoder.geocode({'location': latlng}, (results: any, status:string) => {
+        if (status === 'OK') {
+          if (results[0]) {
+            let indirizzo = results[0].formatted_address.split(',')[0]+ ', ' + results[0].formatted_address.split(',')[1];
+            this.indirizzi.push({id: perizia.idPerizia, indirizzo: indirizzo});
+          } else {
+            console.log('No results found');
+          }
+        } else {
+          console.log('Geocoder failed due to: ' + status);
+        }
+      })
+    })
+    console.log(this.indirizzi);
   }
 
   infoMarker(event: any, marker: any) {
