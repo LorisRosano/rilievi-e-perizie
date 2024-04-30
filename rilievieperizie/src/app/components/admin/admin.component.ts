@@ -1,12 +1,11 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, asNativeElements, viewChild } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { RouterModule } from '@angular/router';
-import { GoogleMap, GoogleMapsModule } from '@angular/google-maps';
+import { GoogleMap, GoogleMapsModule, MapGeocoder } from '@angular/google-maps';
 import { ServerService } from '../../servizi/server.service';
 import { FormsModule } from '@angular/forms';
 import MapMouseEvent = google.maps.MapMouseEvent;
 import { MapMarker } from '@angular/google-maps';
-
 
 @Component({
   selector: 'AdminComponent',
@@ -99,6 +98,10 @@ export class AdminComponent {
   nuovaEmail: any;
   nuovoSesso: any;
 
+  periziaModifica:any;
+  titoloPeriziaModificata:any;
+  descPeriziaModificata:any;
+
   codOpPeriziaVisualizzata: any;
   dataOraPeriziaVisualizzata: any;
   descPeriziaVisualizzata: any;
@@ -109,6 +112,15 @@ export class AdminComponent {
   idPeriziaVisualizzata: any;
 
   edit:boolean = false;
+  editP:boolean = false;
+
+  aggiungiperiziatext: string = "Aggiungi perizia";
+
+  divTempoStimato:any = "";
+  pulisciPercorso:boolean = false;
+
+  erroreRicercaUtente: boolean = false;
+  divErroreRicerca:any = "";
 
   ngOnInit() {
     this.caricaPerizie();
@@ -152,13 +164,31 @@ export class AdminComponent {
     });
   }
 
+  getindirizzo(lat: any, lng: any){
+    let geocoder = new google.maps.Geocoder();
+    let latlng = {lat: lat, lng: lng}
+    // console.log(latlng)
+    // geocoder.geocode({'location': latlng}, (results: any, status:string) => {
+    //   if (status === 'OK') {
+    //     if (results[0]) {
+    //       this.indirizzo = results[0].formatted_address.split(',')[0]+ ', ' + results[0].formatted_address.split(',')[1]
+    //       console.log(results[0].formatted_address)
+    //     } else {
+    //       console.log('No results found');
+    //     }
+    //   } else {
+    //     console.log('Geocoder failed due to: ' + status);
+    //   }
+    // })
+  }
+
   center: google.maps.LatLngLiteral =
     {
       lat: this.sedeCentrale.lat,
       lng: this.sedeCentrale.lng
     };
 
-  zoom = 16;
+  zoom = 12;
   vertices: google.maps.LatLngLiteral[] = [{
     lat: 44.5558363,
     lng: 7.7360397
@@ -177,24 +207,24 @@ export class AdminComponent {
   }
 
   infoMarker(event: any, marker: any) {
-    this.visualizzaDivInfoMarker = true;
-    let title = marker.title;
-
-    let perizia = this.getPeriziaByTitle(title);
-
-    this.titlePeriziaVisualizzata = perizia.Title;
-    this.codOpPeriziaVisualizzata = perizia.codiceOperatore;
-    this.dataOraPeriziaVisualizzata= this.stampaDataOra(perizia.dataOra);
-    this.descPeriziaVisualizzata = perizia.descrizione;
-    this.latPeriziaVisualizzata = perizia.lat;
-    this.lngPeriziaVisualizzata = perizia.lng;
-    this.idPeriziaVisualizzata = perizia.idPerizia;
-
-    // let address = this.getAddress(perizia.lat, perizia.lng);
-
-    this.markerPeriziaVisualizzata = marker;
-    
-
+    if(marker.title != "Sede centrale"){
+      this.visualizzaDivInfoMarker = true;
+      let title = marker.title;
+  
+      let perizia = this.getPeriziaByTitle(title);
+  
+      this.titlePeriziaVisualizzata = perizia.Title;
+      this.codOpPeriziaVisualizzata = perizia.codiceOperatore;
+      this.dataOraPeriziaVisualizzata= this.stampaDataOra(perizia.dataOra);
+      this.descPeriziaVisualizzata = perizia.descrizione;
+      this.latPeriziaVisualizzata = perizia.lat;
+      this.lngPeriziaVisualizzata = perizia.lng;
+      this.idPeriziaVisualizzata = perizia.idPerizia;
+  
+      // let address = this.getAddress(perizia.lat, perizia.lng);
+  
+      this.markerPeriziaVisualizzata = marker;
+    }
   }
 
   getPeriziaByTitle(title: any) {
@@ -238,6 +268,7 @@ export class AdminComponent {
   }
 
   visualizzaPercorso(marker:any){
+    
     const destination = marker.position;
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer();
@@ -259,10 +290,21 @@ export class AdminComponent {
     directionsService.route(request, (result, status) => {
       if (status === google.maps.DirectionsStatus.OK) {
         directionsRenderer.setDirections(result);
+        result!.routes.forEach((route, i) => {
+          console.log(`Percorso ${i + 1}:`);
+          console.log(`- Tempo stimato di percorso: ${route.legs[0].duration!.text}`);
+          console.log(`- Distanza: ${route.legs[0].distance!.text}`);
+          this.divTempoStimato = "Tempo stimato: " + route.legs[0].duration!.text + " - Distanza: " + route.legs[0].distance!.text;
+          this.pulisciPercorso = true;
+        });
       } else {
         console.error('Errore durante il calcolo del percorso:', status);
       }
     });
+  }
+
+  pulisciPercorsoFunction(){
+    window.location.reload();
   }
 
   chiudiDivInfoMarker() {
@@ -357,15 +399,50 @@ export class AdminComponent {
   }
 
   cercaUtente() {
-    this.tableNascosta = false;
-    this.nascondiPerizie = false;
+    
     let rq = this.server.inviaRichiesta("get", "/cercaUtente", { username: this.userRicerca });
     rq!.then((data: any) => {
-      this.utenteCercato = data;
-      this.filtraPerizie(this.utenteCercato.id);
+      if(data != null){
+        this.tableNascosta = false;
+        this.nascondiPerizie = false;
+        this.utenteCercato = data;
+        this.filtraPerizie(this.utenteCercato.id);
+        this.erroreRicercaUtente = false;
+        this.divErroreRicerca = "";
+      }
+      else{
+        this.erroreRicercaUtente = true;
+        this.divErroreRicerca = "L'utente cercato non esiste";
+        console.log("Utente non trovato")
+      }
+      
     }).catch((error: any) => {
       console.log(error);
     });
+
+    // this.filtraMarker(this.utenteCercato);
+  }
+
+  filtraMarker(utente: any) {
+    let perizieUtente = this.listaPerizie.filter((perizia: any) => {
+      return perizia.codiceOperatore == utente.id;
+    });
+
+    console.log(perizieUtente)
+
+    // this.markers = [];
+    // perizieUtente.forEach((perizia: any) => {
+    //   this.createMarker(perizia.lat, perizia.lng, perizia.Title);
+    // });
+
+    // this.markers.push({
+    //   position: {
+    //     lat: 44.5558363,
+    //     lng: 7.7360397
+    //   },
+    //   title: "Sede centrale"
+    // });
+
   }
 
   filtraPerizie(idUtente: any) {
@@ -383,6 +460,7 @@ export class AdminComponent {
     this.utenteCercato = "";
     this.perizieUtenteCercato = "";
     this.nascondiPerizie = true;
+    this.userRicerca = "";
   }
 
   editUtente(utente: any) {
@@ -391,8 +469,18 @@ export class AdminComponent {
     console.log(this.utenteModificato)
   }
 
+  editPerizia(perizia:any){
+    this.editP = true;
+    this.periziaModifica = perizia;
+    console.log(this.periziaModifica)
+  }
+
   chiudiEditUtente(){
     this.edit = false;
+  }
+
+  chiudiEditPerizia(){
+    this.editP = false;
   }
 
   applicaModificheUtente(){
@@ -409,6 +497,15 @@ export class AdminComponent {
     let rq = this.server.inviaRichiesta("post", "/modificaUtente", {id: this.utenteModificato.id, nome: nome, cognome: cognome, username: username, email: email, sesso: sesso});
     this.caricaUtenti();
     this.edit = false;
+  }
+
+  modificaPerizia(){
+    let titolo, descrizione;
+    if(!this.descPeriziaModificata) {descrizione = this.periziaModifica.descrizione} else {descrizione = this.descPeriziaModificata;}
+    if(!this.titoloPeriziaModificata) {titolo = this.periziaModifica.Title} else {titolo = this.titoloPeriziaModificata;}
+    let rq = this.server.inviaRichiesta("post", "/modificaPerizia", {id: this.periziaModifica.idPerizia, descrizione: descrizione, titolo: titolo});
+    this.caricaPerizie();
+    this.editP = false;
   }
 
   getNuovoID() {
@@ -429,27 +526,6 @@ export class AdminComponent {
     let [dataPerizia, ora] = s.split("T");
     ora = ora.split(":")[0] + ":" + ora.split(":")[1];
     return [dataPerizia, ora];
-  }
-
-  indirizzoPerizia(lat: any, lng: any) {
-    // const request: google.maps.DirectionsRequest = {
-    //   destination: { lat: lat, lng: lng },
-    //   origin: { lat: this.sedeCentrale?.lat!, lng: this.sedeCentrale?.lng! },
-    //   travelMode: google.maps.TravelMode.DRIVING,
-    // };
-
-    // this.indirizzo = this.mapDirectionsService.route(request).pipe(
-    //   map((response) => {
-    //     this.perizieService.markerPositions = []
-
-    //     this.startAddress = response.result?.routes[0].legs[0].start_address!;
-    //     this.endAddress = response.result?.routes[0].legs[0].end_address!;
-    //     this.distance = response.result?.routes[0].legs[0].distance!.text!;
-    //     this.duration = response.result?.routes[0].legs[0].duration!.text!;
-
-    //     return response.result;
-    //   }),
-    // );
   }
 
   aggiungiPerizia(event: MapMouseEvent) {
@@ -571,14 +647,14 @@ export class AdminComponent {
       return perizia.idPerizia == idPerizia;
     });
 
-    console.log(perizia);
-    console.log(perizia[0].images);
+    console.log(perizia[0])
 
     for(let img of perizia[0].images){
       this.fotoPerizaCorrente.push(img);
     }
 
-    console.log(this.fotoPerizaCorrente);
+    console.log(this.fotoPerizaCorrente)
+
   }
 
   chiudiImmaginiPerizie(){

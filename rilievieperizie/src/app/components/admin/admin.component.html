@@ -9,8 +9,14 @@
                 (mapClick)="infoMarker($event, marker)"></map-marker>
             }
             <div id="divNuovaPerizia">
-                <button id="btnAggiungiPerizia" (click)="btnAggiungiPerizia = !btnAggiungiPerizia">Aggiungi
-                    Perizia</button>
+                <button id="btnAggiungiPerizia" (click)="btnAggiungiPerizia = !btnAggiungiPerizia">Aggiungi Perizia</button>
+                @if(pulisciPercorso){
+                    <button (click)="pulisciPercorsoFunction()">Pulisci percorso</button>
+                }
+                
+                <div id="tempoStimato">
+                    {{divTempoStimato}}
+                </div>
             </div>
         </google-map>
     </div>
@@ -22,7 +28,7 @@
                 <span class="material-symbols-outlined" id="xClose" (click)="chiudiDivInfoMarker()">
                     close
                 </span>
-                <h1>{{titlePeriziaVisualizzata}}</h1>
+                <h2>{{titlePeriziaVisualizzata}}</h2>
                 <div id="divInfo">
                     <h3>Descrizione</h3>
                     <div class="divPerizia">{{descPeriziaVisualizzata}}</div>
@@ -183,12 +189,14 @@
                     <th>ID Operatore</th>
                     <th>Nome</th>
                     <th>Cognome</th>
+                    <th>Titolo</th>
                     <th>Data</th>
                     <th>Ora</th>
                     <th>Indirizzo</th>
                     <th>Descrizione</th>
-                    <th></th>
-                    <th></th>
+                    <td>Modifica</td>
+                    <th>Foto</th>
+                    <th>Elimina</th>
                 </tr>
                 @for(perizia of listaPerizie; track $index)
                 {
@@ -196,16 +204,18 @@
                     <td id="tdCodOperatore">{{perizia.codiceOperatore}}</td>
 
                     @for (utenti of listaUtenti; track $index) {
-                    @if(utenti.id == perizia.codiceOperatore){
-                    <td>{{utenti.nome}}</td>
-                    <td>{{utenti.cognome}}</td>
-                    }
+                        @if(utenti.id == perizia.codiceOperatore){
+                        <td>{{utenti.nome}}</td>
+                        <td>{{utenti.cognome}}</td>
+                        }
 
                     }
+                    <td>{{perizia.Title}}</td>
                     <td>{{stampaDataOra(perizia.dataOra)[0]}}</td>
                     <td>{{stampaDataOra(perizia.dataOra)[1]}}</td>
-                    <td>{{indirizzoPerizia(perizia.lat, perizia.lng)}}</td>
+                    <td><!--   {{getindirizzo(perizia.lat, perizia.lng)}} --></td>
                     <td>{{perizia.descrizione}}</td>
+                    <td><span class="material-symbols-outlined" id="editUser" (click)="editPerizia(perizia)">edit</span></td>
                     <td><span class="material-symbols-outlined" id="deleteUser" (click)="visualizzaImmagini(perizia.idPerizia)">photo_camera</span></td>
                     <td><span class="material-symbols-outlined" id="deleteUser" (click)="eliminaPerizia(perizia.Title, perizia._id)">delete</span></td>
                 </tr>
@@ -214,6 +224,24 @@
         </div>
 
     </div>
+
+    @if(editP){
+        <div id="divEditPerizia" [class.togliOpacity]="togliOpacity">
+            <span>
+                <div [class.chiudiInfoMarker]="chiudiInfoMarker">
+                    <span class="material-symbols-outlined" id="xClose" (click)="chiudiEditPerizia()">
+                        close
+                    </span>
+                    <h1>Modifica Perizia</h1>
+                    <h3>Titolo</h3>
+                    <input type="text" [(ngModel)]="titoloPeriziaModificata">
+                    <h3>Descrizione</h3>
+                    <textarea name="" id="" cols="15" rows="5" [(ngModel)]="descPeriziaModificata"></textarea>
+                    <button (click)="modificaPerizia()">Modifica</button>
+                </div>
+            </span>
+        </div>
+    }
 
     @if(visualizzaImmaginiPerizie){
         <div id="divIMGPerizia" [class.togliOpacity]="togliOpacity">
@@ -245,22 +273,29 @@
             <span id="spanHeader">
                 <input type="search" placeholder="Inserisci il nome utente..." [(ngModel)]="userRicerca">
                 <button id="btnCercaUtente" (click)="cercaUtente()">Cerca</button>
+                
                 @if(!tableNascosta){
                 <button id="btnPulisci" (click)="pulisciRicerca()">Pulisci ricerca</button>
                 }
 
             </span>
+            @if(erroreRicercaUtente){
+                <div id="divErroreRicercaUtente">
+                    {{divErroreRicerca}}
+                </div>
+            }
             <table class="tableNascosta">
-                <tr>
-                    <th>Nome utente</th>
-                    <th>Nome</th>
-                    <th>Cognome</th>
-                    <th>Sesso</th>
-                    <th>Email</th>
-                    <th>Elimina</th>
-                    <th>Modifica</th>
-                </tr>
+                
                 @if(!tableNascosta){
+                    <tr>
+                        <th>Nome utente</th>
+                        <th>Nome</th>
+                        <th>Cognome</th>
+                        <th>Sesso</th>
+                        <th>Email</th>
+                        <th>Elimina</th>
+                        <th>Modifica</th>
+                    </tr>
                 <tr>
                     <td>{{utenteCercato.username}}</td>
                     <td>{{utenteCercato.nome}}</td>
@@ -290,13 +325,14 @@
                 <tr>
                     <td>{{stampaDataOra(perizia.dataOra)[0]}}</td>
                     <td>{{stampaDataOra(perizia.dataOra)[1]}}</td>
-                    <td>{{indirizzoPerizia(perizia.lat, perizia.lng)}}</td>
+                    <td> <!--   {{getindirizzo(perizia.lat, perizia.lng)}} --> </td> 
                     <td>{{perizia.descrizione}}</td>
                     <td><span class="material-symbols-outlined" id="deleteUser" (click)="visualizzaImmagini(perizia.idPerizia)">photo_camera</span></td>
                 </tr>
                 }
             </table>
             }
+            
         </div>
     </div>
 

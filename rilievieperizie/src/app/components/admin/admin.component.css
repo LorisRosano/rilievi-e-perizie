@@ -480,7 +480,9 @@ button:not(:hover) {
 
 .divPerizia{
   text-align: center;
-  width: auto;
+  width: 50%;
+  max-width: 20ch;
+  text-wrap: break-word;
 }
 
 #divIMGPerizia>span>div {
@@ -499,6 +501,22 @@ button:not(:hover) {
   animation: animInfoMarker 0.7s forwards ease-out;
 }
 
+#divEditPerizia>span>div {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  background-color: #222222;
+  color: white;
+  border-radius: 3.5vh;
+  position: absolute;
+  top: 30vh;
+  bottom: 30vh;
+  left: 45vh;
+  right: 45vh;
+  transform: translateY(200%);
+  animation: animInfoMarker 0.7s forwards ease-out;
+}
+
 #divInfo{
   display: flex;
   flex-direction: column;
@@ -509,17 +527,22 @@ button:not(:hover) {
   border-radius: 3.5vh;
   width: 100%;
   height: 100%;
+  overflow: hidden;
   border: 3px solid white;
-  padding: 3vh;
   gap: 1.5vh;
 }
 
 
-#divInfoMarker>span>div>h1 {
+#divInfoMarker>span>div>h2 {
   text-align: center;
+
 }
 
 #divIMGPerizia>span>div>h1 {
+  text-align: center;
+}
+
+#divEditPerizia>span>div>h1 {
   text-align: center;
 }
 
@@ -553,6 +576,10 @@ button:not(:hover) {
   margin: 1vw;
 }
 
+#divEditPerizia>span>div>span {
+  margin: 1vw;
+}
+
 #divInfoPerizia>span>div>span {
   margin: 1vw;
 }
@@ -566,6 +593,10 @@ button:not(:hover) {
 }
 
 #divIMGPerizia>span>div>span:hover {
+  animation: xRossa 0.5s forwards;
+}
+
+#divEditPerizia>span>div>span:hover {
   animation: xRossa 0.5s forwards;
 }
 
@@ -588,6 +619,10 @@ button:not(:hover) {
 }
 
 #divIMGPerizia>span>div>span:not(:hover) {
+  animation: xNotRossa 0.5s forwards;
+}
+
+#divEditPerizia>span>div>span:not(:hover) {
   animation: xNotRossa 0.5s forwards;
 }
 
@@ -643,6 +678,17 @@ button:not(:hover) {
   animation: animBGColorInfoMarker 1s forwards;
 }
 
+#divEditPerizia {
+  height: 100vh;
+  width: 100vw;
+  background-color: #000a;
+  z-index: 50;
+  position: fixed;
+  inset: 0;
+  padding-right: var(--w-menu);
+  animation: animBGColorInfoMarker 1s forwards;
+}
+
 #divInfoPerizia {
   height: 100vh;
   width: 100vw;
@@ -673,6 +719,12 @@ button:not(:hover) {
 
 
 #divIMGPerizia>span {
+  position: relative;
+  display: block;
+  height: 100%;
+}
+
+#divEditPerizia>span {
   position: relative;
   display: block;
   height: 100%;
@@ -781,10 +833,11 @@ google-map {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  width: auto;
 }
 
 #contenitoreImmagini {
-  height: calc(100% - 10vh);
+  height: calc(100% - 5vh);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -816,8 +869,8 @@ google-map {
 }
 
 #imgPerizia {
-  width: 15vw;
-  height: 30vh;
+  width: 35vw;
+  height: 45vh;
 }
 
 #iconLogout{
@@ -826,4 +879,14 @@ google-map {
   position: absolute;
   bottom: 0;
   right: 0;
+}
+
+#tempoStimato{
+  font-size: 1.5rem;
+  
+}
+
+#divErroreRicercaUtente{
+  font-size: 1.5rem;
+  padding: 3.5vh;
 }

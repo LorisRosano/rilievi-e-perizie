@@ -314,6 +314,20 @@ app.post("/api/modificaUtente", async (req, res, next) => {
     rq.finally(() => client.close());
 });
 
+app.post("/api/modificaPerizia", async (req, res, next) => {
+    let idPerizia = req["body"]["id"];
+    let descrizione = req["body"]["descrizione"];
+    let title = req["body"]["titolo"];
+    const client = new MongoClient(connectionString);
+    await client.connect();
+    let collection = client.db(DBNAME).collection("perizie");
+    let rq = collection.updateOne({ "idPerizia": idPerizia }, { $set: { "descrizione": descrizione, "Title": title } });
+    rq.then((data) => res.send(data));
+    rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
+    rq.finally(() => client.close());
+});
+
+
 //********************************************************************************************//
 // Default route e gestione degli errori
 //********************************************************************************************//
