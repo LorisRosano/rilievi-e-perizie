@@ -44,6 +44,7 @@ export class AdminComponent {
   markers: any[];
   markerTitle: any;
   indirizzo: any;
+  filtroMarker: any;
 
   username: string = "";
   email: string = "";
@@ -145,8 +146,10 @@ export class AdminComponent {
   aggiornaMarker() {
     this.markers = [];
     this.listaPerizie.forEach((perizia: any) => {
+      if(!this.filtroMarker||this.filtroMarker == perizia.codiceOperatore){
       this.createMarker(perizia.lat, perizia.lng, perizia.Title);
       this.idPeriziaCorrente++;
+      }
     })
     this.idPeriziaCorrente++;
 
@@ -155,7 +158,8 @@ export class AdminComponent {
         lat: 44.5558363,
         lng: 7.7360397
       },
-      title: "Sede centrale"
+      title: "Sede centrale",
+      
     });
 
   }
@@ -339,7 +343,6 @@ export class AdminComponent {
   }
 
   ChiudiTutto() {
-    this.pulisciRicerca();
     const { apri, chiudi } = this.animazioni;
     const aperti = Object.keys(apri).filter((c) => apri[c as keyof typeof apri]);
     Object.keys(apri).forEach((c) => apri[c as keyof typeof apri] = false)
@@ -416,8 +419,10 @@ export class AdminComponent {
         this.nascondiPerizie = false;
         this.utenteCercato = data;
         this.filtraPerizie(this.utenteCercato.id);
+        this.filtroMarker = this.utenteCercato.id;
         this.erroreRicercaUtente = false;
         this.divErroreRicerca = "";
+        this.aggiornaMarker();
       }
       else{
         this.erroreRicercaUtente = true;
@@ -434,7 +439,7 @@ export class AdminComponent {
 
   filtraMarker(utente: any) {
     let perizieUtente = this.listaPerizie.filter((perizia: any) => {
-      return perizia.codiceOperatore == utente.id;
+      return perizia.Title == utente.id;
     });
 
     console.log(perizieUtente)
@@ -470,6 +475,8 @@ export class AdminComponent {
     this.perizieUtenteCercato = "";
     this.nascondiPerizie = true;
     this.userRicerca = "";
+    this.filtroMarker = "";
+    this.caricaPerizie();
   }
 
   editUtente(utente: any) {
