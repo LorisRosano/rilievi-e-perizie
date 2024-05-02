@@ -134,7 +134,8 @@ export class AdminComponent {
   caricaPerizie() {
     let rq = this.server.inviaRichiesta("get", "/listaPerizie");
     rq!.then((data: any) => {
-      this.listaPerizie = data;
+      console.log(data)
+      this.listaPerizie = data["data"];
       this.aggiornaMarker();
       this.getindirizzo();
     }).catch((error: any) => {
@@ -167,7 +168,7 @@ export class AdminComponent {
   caricaUtenti() {
     let rq = this.server.inviaRichiesta("get", "/listaUtenti");
     rq!.then((data: any) => {
-      this.listaUtenti = data;
+      this.listaUtenti = data["data"];
     }).catch((error: any) => {
       console.log(error);
     });
@@ -364,7 +365,7 @@ export class AdminComponent {
   eliminaUtente(idUtente: any) {
     let rq = this.server.inviaRichiesta("delete", "/eliminaUtente", { idUtente: idUtente });
     rq!.then((data: any) => {
-      console.log(data);
+      console.log(data["data"]);
     }).catch((error: any) => {
       console.log(error);
     });
@@ -378,7 +379,7 @@ export class AdminComponent {
 
     let rq = this.server.inviaRichiesta("delete", "/eliminaPerizia", { idPerizia: idPerizia });
     rq!.then((data: any) => {
-      console.log(data);
+      console.log(data["data"]);
     }).catch((error: any) => {
       console.log(error);
     });
@@ -397,7 +398,7 @@ export class AdminComponent {
     let idNuovoUtente: any = await this.getNuovoID();
     let rq: any = this.server.inviaRichiesta("post", "/nuovoUtente", { username: this.username, password: this.passwordGenerica, email: this.email, cognome: this.cognome, nome: this.nome, sesso: this.sesso, idUtente: idNuovoUtente });
     rq.then((data: any) => {
-      console.log(data);
+      console.log(data["data"]);
       this.lblAggiungiUtente = "Utente aggiunto con successo";
       this.coloreUtenteAggiunto = true;
       this.coloreUtenteNONAggiunto = false;
@@ -414,10 +415,10 @@ export class AdminComponent {
     
     let rq = this.server.inviaRichiesta("get", "/cercaUtente", { username: this.userRicerca });
     rq!.then((data: any) => {
-      if(data != null){
+      if(data["data"] != null){
         this.tableNascosta = false;
         this.nascondiPerizie = false;
-        this.utenteCercato = data;
+        this.utenteCercato = data["data"];
         this.filtraPerizie(this.utenteCercato.id);
         this.filtroMarker = this.utenteCercato.id;
         this.erroreRicercaUtente = false;
@@ -462,7 +463,7 @@ export class AdminComponent {
   filtraPerizie(idUtente: any) {
     let rq = this.server.inviaRichiesta("get", "/perizieById", { idUtente: idUtente });
     rq!.then((data: any) => {
-      this.perizieUtenteCercato = data;
+      this.perizieUtenteCercato = data["data"];
       console.log(this.perizieUtenteCercato);
     }).catch((error: any) => {
       console.log(error);
@@ -511,8 +512,9 @@ export class AdminComponent {
     console.log(this.nuovoNome, this.nuovoCognome, this.nuovoUsername, this.nuovaEmail, this.nuovoSesso)
 
     let rq = this.server.inviaRichiesta("post", "/modificaUtente", {id: this.utenteModificato.id, nome: nome, cognome: cognome, username: username, email: email, sesso: sesso});
-    this.caricaUtenti();
+    
     this.edit = false;
+    this.caricaUtenti();
   }
 
   modificaPerizia(){
@@ -529,7 +531,7 @@ export class AdminComponent {
       let id: any;
       let aus: any = this.server.inviaRichiesta("get", "/getUtenti");
       aus.then((data: any) => {
-        id = data.length;
+        id = data["data"].length;
         resolve(id);
       }).catch((error: any) => {
         reject(error);
@@ -608,7 +610,7 @@ export class AdminComponent {
 
         let rq = this.server.inviaRichiesta("post", "/addBase64CloudinaryImage", { codiceOperatore: this.idOperatorePerizia, imgBase64: base64 });
         rq!.then((data: any) => {
-          this.fotoPerizie.push(data.url);
+          this.fotoPerizie.push(data["data"].url);
           console.log(this.fotoPerizie);
           this.aspettaImmagini = true;
         }).catch((error: any) => {

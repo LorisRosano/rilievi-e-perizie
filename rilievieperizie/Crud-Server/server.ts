@@ -87,13 +87,13 @@ const corsOptions = {
     credentials: true
 };
 app.use("/", _cors(corsOptions));
-app.use(_cors());
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    next();
-})
+// app.use(_cors());
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+//     next();
+// })
 
 //********************************************************************************************//
 // Routes finali di risposta al client
@@ -107,33 +107,32 @@ app.get("/api/login", async (req, res, next) => {
     let collection = client.db(DBNAME).collection("utenti");
     let rq = collection.findOne({ "username": username, "password": password });
     rq.then((data) => {
-        // if (data) {
-        //     let token = createToken(data);
-        //     console.log(token);
-        //     res.setHeader("authorization", token);
-        //     // Fa si che la header authorization venga restituita al client
-        //     res.setHeader("access-control-expose-headers", "authorization");
-        //     res.send({ "ris": "ok" });
-            
-        // }
+        console.log(data);
+        if (data) {
+            let token = createToken(data);
+            console.log(token);
+            res.setHeader("authorization", token);
+            // Fa si che la header authorization venga restituita al client
+            res.setHeader("access-control-expose-headers", "authorization");  
+        }
         res.send(data); 
     });
     rq.catch((err) => res.status(500).send(`Errore esecuzione query: ${err}`));
     rq.finally(() => client.close());
 });
 
-// function createToken(data) {
-//     let currentTimeSeconds = Math.floor(new Date().getTime() / 1000);
-//     let payload = {
-//         "_id": data._id,
-//         "username": data.username,
-//         // Se c'è iat mette iat altrimenti mette currentTimeSeconds
-//         "iat": data.iat || currentTimeSeconds,
-//         "exp": currentTimeSeconds + parseInt(process.env.durata_token)
-//     }
-//     let token = _jwt.sign(payload, "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTcxNDE0ODQxMywiaWF0IjoxNzE0MTQ4NDEzfQ.Us6C4waBeTRaoMPcU8cMarfmb2s488ifYo5rhhM6I1A");
-//     return token;
-// }
+function createToken(data) {
+    let currentTimeSeconds = Math.floor(new Date().getTime() / 1000);
+    let payload = {
+        "_id": data._id,
+        "username": data.username,
+        // Se c'è iat mette iat altrimenti mette currentTimeSeconds
+        "iat": data.iat || currentTimeSeconds,
+        "exp": currentTimeSeconds + parseInt(process.env.durata_token)
+    }
+    let token = _jwt.sign(payload, "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTcxNDE0ODQxMywiaWF0IjoxNzE0MTQ4NDEzfQ.Us6C4waBeTRaoMPcU8cMarfmb2s488ifYo5rhhM6I1A");
+    return token;
+}
 
 app.post("/api/nuovoUtente", async function (req, res, next) {
     let username = req["body"]["username"];
