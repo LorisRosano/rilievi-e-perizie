@@ -50,7 +50,7 @@ export class ServerService {
       case 'get':
         return axios.get(resource, { params: params });
       case 'delete':
-        return  axios.delete(resource, { params: params });
+        return  axios.delete(resource, { data: params });
       case 'post':
         return  axios.post(resource, params);
       case 'patch':

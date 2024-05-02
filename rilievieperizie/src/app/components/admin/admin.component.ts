@@ -130,6 +130,7 @@ export class AdminComponent {
     this.checkToken();
     this.caricaPerizie();
     this.caricaUtenti();
+    
   }
 
   async checkToken() {
@@ -141,6 +142,7 @@ export class AdminComponent {
   }
 
   caricaPerizie() {
+    this.indirizzi = [];
     let rq = this.server.inviaRichiesta("get", "/listaPerizie");
     rq!.then((data: any) => {
       console.log(data)
@@ -216,6 +218,7 @@ export class AdminComponent {
       geocoder.geocode({'location': latlng}, (results: any, status:string) => {
         if (status === 'OK') {
           if (results[0]) {
+            console.log(results[0])
             let indirizzo = results[0].formatted_address.split(',')[0]+ ', ' + results[0].formatted_address.split(',')[1];
             this.indirizzi.push({id: perizia.idPerizia, indirizzo: indirizzo});
           } else {
@@ -557,8 +560,8 @@ export class AdminComponent {
 
   aggiungiPerizia(event: MapMouseEvent) {
 
-    let lat = event.latLng!.toJSON().lat - 0.00059;
-    let lng = event.latLng!.toJSON().lng + 0.00025;
+    let lat = event.latLng!.toJSON().lat - 0.01000;
+    let lng = event.latLng!.toJSON().lng + 0.00500;
 
     this.createMarker(lat, lng, this.titoloPerizia);
 
