@@ -148,6 +148,10 @@
 
 }
 
+#divAggiungiUtente>#divIntermedio {
+  padding-block: 5vh !important;
+}
+
 #divIntermedio {
   padding-block: 10vh;
   position: relative;
@@ -214,7 +218,6 @@ td {
 }
 
 #lblAggiungiUtente {
-  font-size: 2rem;
   width: 20vh;
 }
 
@@ -469,8 +472,8 @@ button:not(:hover) {
   color: white;
   border-radius: 3.5vh;
   position: absolute;
-  top: 15vh;
-  bottom: 15vh;
+  top: 7vh;
+  bottom: 7vh;
   left: 50vh;
   right: 50vh;
   transform: translateY(200%);
@@ -508,8 +511,8 @@ button:not(:hover) {
   color: white;
   border-radius: 3.5vh;
   position: absolute;
-  top: 30vh;
-  bottom: 30vh;
+  top: 20vh;
+  bottom: 20vh;
   left: 45vh;
   right: 45vh;
   transform: translateY(200%);
