@@ -295,8 +295,7 @@ td {
 
 #divListaPerizie table {
   width: 100%;
-  border-collapse: collapse;
-}
+  border-collapse: collapse;}
 
 #divListaPerizie td {
   padding: 1rem;
@@ -311,6 +310,8 @@ td {
 
 #divListaPerizie #divIntermedio {
   width: 100%;
+  overflow: scroll;
+  scrollbar-width: none;
 }
 
 
@@ -454,8 +455,8 @@ button:not(:hover) {
   color: white;
   border-radius: 3.5vh;
   position: absolute;
-  top: 20vh;
-  bottom: 20vh;
+  top: 10vh;
+  bottom: 10vh;
   left: 50vh;
   right: 50vh;
   transform: translateY(200%);
