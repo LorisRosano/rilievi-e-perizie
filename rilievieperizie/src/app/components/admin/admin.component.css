@@ -838,7 +838,7 @@ google-map {
 }
 
 #contenitoreImmagini {
-  height: calc(100% - 5vh);
+  height: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

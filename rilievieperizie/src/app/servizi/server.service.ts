@@ -7,7 +7,7 @@ import { firstValueFrom } from 'rxjs';
 })
 export class ServerService {
 
-  private REST_API_SERVER = 'http://localhost:3000/api';
+  private REST_API_SERVER = 'https://rilievi-e-perizie.onrender.com/api';
 
   constructor(private httpClient: HttpClient) {}
 
