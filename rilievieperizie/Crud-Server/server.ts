@@ -80,20 +80,20 @@ app.use("/", (req: any, res: any, next: any) => {
 });
 
 // 5. Controllo degli accessi tramite CORS
-const corsOptions = {
-    origin: function (origin, callback) {
-        return callback(null, true);
-    },
-    credentials: true
-};
-app.use("/", _cors(corsOptions));
-// app.use(_cors());
-// app.use(function(req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-//     next();
-// })
+// const corsOptions = {
+//     origin: function (origin, callback) {
+//         return callback(null, true);
+//     },
+//     credentials: true
+// };
+// app.use("/", _cors(corsOptions));
+app.use(_cors());
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    next();
+})
 
 //********************************************************************************************//
 // Routes finali di risposta al client
