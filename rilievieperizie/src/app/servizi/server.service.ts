@@ -8,7 +8,7 @@ import axios from 'axios';
 })
 export class ServerService {
 
-  private REST_API_SERVER = 'https://rilievi-e-perizie.onrender.com/api';
+  private REST_API_SERVER = 'http://localhost:3000/api';
 
   constructor() {
 
