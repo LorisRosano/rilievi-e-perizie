@@ -127,8 +127,17 @@ export class AdminComponent {
   indirizzi: any = [];
 
   ngOnInit() {
+    this.checkToken();
     this.caricaPerizie();
     this.caricaUtenti();
+  }
+
+  async checkToken() {
+    let token: any = localStorage.getItem("token");
+    console.log(token);
+    if (!token || token == undefined) {
+      window.location.href = "/login";
+    }
   }
 
   caricaPerizie() {
